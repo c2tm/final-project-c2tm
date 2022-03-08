@@ -1,8 +1,30 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, unmountComponentAtNode } from 'react-dom';
+import { BrowserRouter } from "react-router-dom";
+import App from './App'
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+describe('App', () => {
+  let container = null;
+
+    beforeEach(() => {
+        container = document.createElement('div');
+        document.body.appendChild(container);
+    });
+
+    afterEach(() => {
+        unmountComponentAtNode(container);
+        container.remove();
+        container = null;
+    });
+
+    it('renders container', () => {
+      expect(document.querySelector('div')).not.toBeNull()
+    })
+
+    it('renders a div', () => {
+      render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>, container);
+      expect(container.querySelector('div')).not.toBeNull()
+  })
+})
