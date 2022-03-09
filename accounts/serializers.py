@@ -21,6 +21,10 @@ class TokenSerializer(TokenSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
+
+    username = serializers.ReadOnlyField(source='user.username')
+
     class Meta:
         model = Account
-        fields = ('id', 'profile_img', 'user')
+        fields = ('id', 'profile_img', 'user', 'username', 'alias',
+                  'bio', 'points', 'alltime_points')

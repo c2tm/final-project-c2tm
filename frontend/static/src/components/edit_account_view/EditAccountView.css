@@ -1,0 +1,8 @@
+.edit-account-view-container {
+  display: flex;
+  justify-content: center;
+}
+
+.form-container {
+  width: 30%;
+}

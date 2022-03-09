@@ -1,4 +1,4 @@
-import { cloneElement, useState } from 'react'
+import { useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import './LoginRegis.css'
@@ -55,7 +55,7 @@ function LoginRegis() {
                 const data = await response.json()
                 if (data.hasOwnProperty('key')) {
                     Cookies.set('authorization', `Token ${data}`)
-                    navigate('/home/');
+                    navigate('/');
                     
                 } else {
                     alert('Incorrect username or password')
@@ -90,7 +90,7 @@ function LoginRegis() {
             } else {
                 const data = await response.json()
                 Cookies.set('authorization', `Token ${data}`)
-                navigate('/home/')
+                navigate('/')
             }
         }
         register();
@@ -138,9 +138,9 @@ function LoginRegis() {
                 <Button variant="primary" type="submit">
                     Login
                 </Button>
-                <button type="button" onClick={handleClick}>
+                <Button type="button" onClick={handleClick}>
                     Register
-                </button>
+                </Button>
         </Form>
     )
 
@@ -162,12 +162,12 @@ function LoginRegis() {
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" name="password2" placeholder='password123' value={regis.password2} onChange={handleRegisChange}/>
                 </Form.Group>
-                <Button variant="secondary" type="submit">
+                <Button variant="primary" type="submit">
                     Submit
                 </Button>
-                <button type="button" onClick={handleClick}>
+                <Button type="button" onClick={handleClick}>
                     Back
-                </button>
+                </Button>
         </Form>
     )
     return (

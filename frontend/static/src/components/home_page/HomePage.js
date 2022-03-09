@@ -31,6 +31,7 @@ function HomePage({setAuth}) {
     return (
         <div>
             <button type="button" onClick={handleLogout}>Logout</button>
+            <button type="button" onClick={() => navigate('/account-view/')}>View Profile</button>
         </div>
     )
 }
