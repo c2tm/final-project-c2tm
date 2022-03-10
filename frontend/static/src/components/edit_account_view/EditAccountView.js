@@ -14,6 +14,8 @@ function EditAccountView({accountInfo, setAccountInfo}) {
 
     })
 
+    const [picture, setPicture] = useState(null)
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -46,31 +48,30 @@ function EditAccountView({accountInfo, setAccountInfo}) {
         e.preventDefault();
 
         let editObject = new FormData();
+        
+        if (edit.alias === '' && edit.bio !== '') {
+            editObject.append('bio', edit.bio);
+        } else if (edit.bio === '' && edit.alias !== '') {
+            editObject.append('alias', edit.alias);
+        }
 
-        if (editObject.alias === '' && editObject.bio !== '') {
-            editObject('bio', edit.bio)
-        } else if (editObject.bio === '' && editObject.alias !== '') {
-            editObject('alias', edit.alias)
-        } 
-
-        if (edit.hasOwnProperty('profile_img')) {
-            editObject('profile_img', edit.profile_img);
+        if (picture) {
+            editObject.append('profile_img', picture);
         }
 
         const editAccount = async () => {
             const options = {
                 method: 'PUT',
                 headers: {
-                    'Content-type': 'application/json',
                     'X-CSRFToken': Cookies.get('csrftoken'),
                 },
-                body: JSON.stringify(editObject),
+                body: editObject,
 
             }
-            const response = await fetch(`/api/v1/accounts/user/${accountInfo.id}/`, options).catch(handleErrors)
+            const response = await fetch(`/api/v1/accounts/user/${accountInfo.id}/`, options).catch(handleErrors);
 
             if(!response.ok) {
-                throw new Error('Response was not ok!')
+                throw new Error('Response was not ok!');
             } else {
                 const data = await response.json();
                 setAccountInfo(data);
@@ -92,7 +93,7 @@ function EditAccountView({accountInfo, setAccountInfo}) {
         <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                     <Form.Label>Image</Form.Label>
-                    <Form.Control type="file" name="profile_img" value={edit.profile_img} onChange={handleEditChange}/>
+                    <Form.Control type="file" name="profile_img" onChange={(e) => setPicture(e.target.files[0])}/>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Alias</Form.Label>
@@ -116,6 +117,7 @@ function EditAccountView({accountInfo, setAccountInfo}) {
             <div className='form-container'>
                 {editFormHTML}
             </div>
+            <button type='button' onClick={() => navigate('/delete-account/')}>Deactive Account</button>
         </div>
         
     )

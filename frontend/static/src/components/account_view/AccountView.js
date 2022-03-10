@@ -45,7 +45,16 @@ function AccountView({accountInfo, setAccountInfo}) {
        )
    }
 
-   console.log(accountInfo);
+   if(!accountInfo.active) {
+       console.log(accountInfo);
+       console.log(accountInfo.active)
+       return (
+           <div>
+               <button onClick={() => navigate('/')}>Home</button>
+               <h1>Account is no longer active.</h1>
+           </div>
+       )
+   }
 
     const accountHTML = (
         <div className="account">
@@ -62,6 +71,7 @@ function AccountView({accountInfo, setAccountInfo}) {
 
     return (
         <div>
+            <button onClick={() => navigate('/')}>Home</button>
             {accountInfo && accountHTML}
         </div>
     )

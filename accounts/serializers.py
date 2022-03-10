@@ -27,4 +27,4 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ('id', 'profile_img', 'user', 'username', 'alias',
-                  'bio', 'points', 'alltime_points')
+                  'bio', 'points', 'alltime_points', 'active')

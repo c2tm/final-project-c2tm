@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import AccountView from "./components/account_view/AccountView";
 import EditAccountView from "./components/edit_account_view/EditAccountView";
+import AccountDeletion from "./components/account_deletion/AccountDeletion";
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
         <Route path='login' element={<LoginRegis />}/>
         <Route path='account-view' element={<AccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo}/>}/>
         <Route path='edit' element={<EditAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo}/>}/>
+        <Route path='delete-account' element={<AccountDeletion />}/>
       </Routes>
 
     </div>

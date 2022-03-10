@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, views, authentication, response
+from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .serializers import AccountSerializer
 from .models import Account
@@ -33,3 +34,15 @@ class UserAccountDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     permission_classes = (isUserOnly,)
+
+
+class DeactivateAccount(views.APIView):
+
+    permission_classes = (isUserOnly,)
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def deactivate(self):
+        account = Account.objects.get(user=request.user)
+        account.active = False
+        account.save()
+        return response.Response({'message': 'deactivated!'})

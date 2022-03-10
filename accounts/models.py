@@ -18,3 +18,4 @@ class Account(models.Model):
     bio = models.TextField(max_length=150, blank=True)
     points = models.IntegerField(blank=True)
     alltime_points = models.IntegerField(blank=True, null=True)
+    active = models.BooleanField(default=True)

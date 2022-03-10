@@ -1,6 +1,6 @@
 from django.urls import path
 
-from accounts.views import AccountListAPIView, UserAccount, UserAccountDetail
+from accounts.views import AccountListAPIView, UserAccount, UserAccountDetail,  DeactivateAccount
 
 
 app_name = 'accounts'
@@ -10,4 +10,5 @@ urlpatterns = [
     path('user/', UserAccount.as_view(), name='accounts-user'),
     path('user/<int:pk>/', UserAccountDetail.as_view(),
          name='accounts-user-detail'),
+    path('user/deactivate/', DeactivateAccount.as_view(), name='deactivate'),
 ]
