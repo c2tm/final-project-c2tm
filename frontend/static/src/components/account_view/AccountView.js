@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { handleErrors } from "../../utitlties/Utility"
+import { getLoginInfo, handleErrors } from "../../utitlties/Utility"
 
 function AccountView({accountInfo, setAccountInfo}) {
 
@@ -8,20 +8,9 @@ function AccountView({accountInfo, setAccountInfo}) {
 
     useEffect(() => {
         if(!accountInfo) {
-            const getAccount = async () => {
-                const response = await fetch('/api/v1/accounts/user/').catch(handleErrors);
-
-                if(!response.ok) {
-                    throw new Error('Response was not ok!')
-                } else {
-                    const data = await response.json()
-                    
-                    setAccountInfo(data[0]);
-                }
-            }
-        getAccount()
+            getLoginInfo(setAccountInfo)
         }
-    },[])
+    }, [])
 
     const initialAccountInfoState = {
         profile_img: '',
@@ -47,10 +36,8 @@ function AccountView({accountInfo, setAccountInfo}) {
 
    if(!accountInfo.active) {
        console.log(accountInfo);
-       console.log(accountInfo.active)
        return (
            <div>
-               <button onClick={() => navigate('/')}>Home</button>
                <h1>Account is no longer active.</h1>
            </div>
        )
@@ -65,13 +52,12 @@ function AccountView({accountInfo, setAccountInfo}) {
             <h2>{accountInfo.username}</h2>
             <p>{accountInfo.bio}</p>
             <button type="button" onClick={() => handleEditClick()}>Edit Account</button>
-
         </div>
     )
 
     return (
         <div>
-            <button onClick={() => navigate('/')}>Home</button>
+            
             {accountInfo && accountHTML}
         </div>
     )

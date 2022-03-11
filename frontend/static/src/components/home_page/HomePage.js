@@ -1,37 +1,21 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
+import { useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
-import { handleErrors } from "../../utitlties/Utility";
+import { getLoginInfo } from "../../utitlties/Utility";
 
-function HomePage({setAuth}) {
+function HomePage({setAccountInfo, accountInfo}) {
 
     const navigate = useNavigate()
 
-    const handleLogout = () => {
-        const logout = async () => {
-            const options = {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                    'X-CSRFToken': Cookies.get('csrftoken'),
-                },
-            }
-            const response = await fetch('/rest-auth/logout/', options).catch(handleErrors);
-  
-            if(!response.ok) {
-                throw new Error('Response was not ok!')
-            } else {
-              Cookies.remove('authorization')
-              setAuth(null);
-              navigate('/login/');
-            }
+    useEffect(() => {
+        if(!accountInfo && Cookies.get('authorization')) {
+            getLoginInfo(setAccountInfo)
         }
-        logout();
-    }
+    }, [])
 
     return (
         <div>
-            <button type="button" onClick={handleLogout}>Logout</button>
-            <button type="button" onClick={() => navigate('/account-view/')}>View Profile</button>
+            
         </div>
     )
 }

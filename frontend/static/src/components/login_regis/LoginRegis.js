@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import { handleErrors } from '../../utitlties/Utility'
 import { useNavigate } from 'react-router-dom'
 
-function LoginRegis() {
+function LoginRegis({setAccountInfo}) {
 
     const [html, setHtml] = useState(true);
 
@@ -34,6 +34,28 @@ function LoginRegis() {
         email: '',
         password1: '',
         password2: '',
+    }
+
+    const createAccount = async () => {
+        const newAccount = new FormData()
+        newAccount.append('alias', regis.username)
+        const options = {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': Cookies.get('csrftoken')
+            },
+            body: newAccount
+        }
+
+        const response = await fetch('/api/v1/accounts/create/', options).catch(handleErrors);
+
+        if(!response.ok) {
+            throw new Error('Response was not ok!')
+        } else {
+            const data = await response.json()
+            setAccountInfo(data);
+            console.log(data);
+        }
     }
 
     const handleLogin = () => {
@@ -90,7 +112,8 @@ function LoginRegis() {
             } else {
                 const data = await response.json()
                 Cookies.set('authorization', `Token ${data}`)
-                navigate('/')
+                createAccount();
+                navigate('/');
             }
         }
         register();

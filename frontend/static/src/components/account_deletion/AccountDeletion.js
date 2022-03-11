@@ -1,12 +1,21 @@
 import { useNavigate } from "react-router-dom"
+import { handleErrors, handleLogout } from "../../utitlties/Utility";
 
-function AccountDeletion() {
+function AccountDeletion({setAccountInfo}) {
 
     const navigate = useNavigate();
 
     const handleDeactivateClick = () => {
         const deactivate = async () => {
+            const response = await fetch('/api/v1/accounts/user/deactivate/').catch(handleErrors)
 
+            if(!response.ok) {
+                throw new Error('Response was not ok!')
+            } else {
+                const data = await response.json()
+                console.log(data)
+                handleLogout(setAccountInfo, navigate)
+            }
         }
         deactivate();
     }

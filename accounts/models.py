@@ -14,8 +14,8 @@ class Account(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
     alias = models.CharField(max_length=20, blank=True)
     profile_img = models.ImageField(
-        upload_to='account/', default='default-user.png')
+        upload_to='account/', default='account/default-user.png')
     bio = models.TextField(max_length=150, blank=True)
-    points = models.IntegerField(blank=True)
-    alltime_points = models.IntegerField(blank=True, null=True)
+    points = models.IntegerField(default=0)
+    alltime_points = models.IntegerField(default=0)
     active = models.BooleanField(default=True)

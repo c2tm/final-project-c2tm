@@ -117,7 +117,7 @@ function EditAccountView({accountInfo, setAccountInfo}) {
             <div className='form-container'>
                 {editFormHTML}
             </div>
-            <button type='button' onClick={() => navigate('/delete-account/')}>Deactive Account</button>
+            <button type='button' onClick={() => navigate('/delete-account/')}>Deactivate Account</button>
         </div>
         
     )

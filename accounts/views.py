@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .serializers import AccountSerializer
 from .models import Account
 from .permissions import isUserOnly
+import json
 
 # Create your views here.
 
@@ -13,6 +14,15 @@ class AccountListAPIView(generics.ListCreateAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     permission_classes = (IsAdminUser,)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class AccountCreateAPIView(generics.CreateAPIView):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
+    # permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -37,12 +47,23 @@ class UserAccountDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class DeactivateAccount(views.APIView):
-
     permission_classes = (isUserOnly,)
-    authentication_classes = [authentication.TokenAuthentication]
 
-    def deactivate(self):
+    def get(self, request):
         account = Account.objects.get(user=request.user)
         account.active = False
         account.save()
         return response.Response({'message': 'deactivated!'})
+
+
+class ActivateAccount(views.APIView):
+    permission_classes = (isUserOnly,)
+    serializer_class = AccountSerializer
+
+    def get(self, request):
+        account = Account.objects.get(user=request.user)
+        serializer = account
+        account.active = True
+        account.save()
+        serializer = AccountSerializer(account)
+        return response.Response(serializer.data)
