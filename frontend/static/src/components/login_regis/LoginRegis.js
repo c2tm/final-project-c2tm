@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import { handleErrors } from '../../utitlties/Utility'
 import { useNavigate } from 'react-router-dom'
 
-function LoginRegis({setAccountInfo}) {
+function LoginRegis({setAccountInfo, setLoggedIn}) {
 
     const [html, setHtml] = useState(true);
 
@@ -54,7 +54,6 @@ function LoginRegis({setAccountInfo}) {
         } else {
             const data = await response.json()
             setAccountInfo(data);
-            console.log(data);
         }
     }
 
@@ -77,6 +76,7 @@ function LoginRegis({setAccountInfo}) {
                 const data = await response.json()
                 if (data.hasOwnProperty('key')) {
                     Cookies.set('authorization', `Token ${data}`)
+                    setLoggedIn(true);
                     navigate('/');
                     
                 } else {
@@ -104,7 +104,7 @@ function LoginRegis({setAccountInfo}) {
                 },
                 body: JSON.stringify(regis),
             }
-            const response = await fetch('/rest-auth/registraion/', options).catch(handleErrors);
+            const response = await fetch('/rest-auth/registration/', options).catch(handleErrors);
 
             if(!response.ok) {
                 alert('A user with this username or email already exist!')

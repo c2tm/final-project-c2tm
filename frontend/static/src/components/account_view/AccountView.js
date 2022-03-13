@@ -1,26 +1,12 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getLoginInfo, handleErrors } from "../../utitlties/Utility"
+import Post from "../home_page/Post";
+import './AccountView.css'
 
-function AccountView({accountInfo, setAccountInfo}) {
+function AccountView({accountInfo, setAccountInfo, postsList}) {
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if(!accountInfo) {
-            getLoginInfo(setAccountInfo)
-        }
-    }, [])
-
-    const initialAccountInfoState = {
-        profile_img: '',
-        alias: '',
-        user: '',
-        username: '',
-        bio: '',
-        points: '',
-        alltime_points: '',
-    }
 
     const handleEditClick = () => {
         navigate('/edit/')
@@ -34,7 +20,7 @@ function AccountView({accountInfo, setAccountInfo}) {
        )
    }
 
-   if(!accountInfo.active) {
+   if(accountInfo.active === false) {
        console.log(accountInfo);
        return (
            <div>
@@ -55,10 +41,20 @@ function AccountView({accountInfo, setAccountInfo}) {
         </div>
     )
 
+    let postHTML;
+
+    if(postsList) {
+        postHTML = postsList.filter(post => post.user === accountInfo.user).map(post => (
+            <Post post={post} accountInfo={accountInfo} />
+        ))
+    }
+
     return (
-        <div>
-            
+        <div className="account-view">
             {accountInfo && accountHTML}
+            <ul>
+                {postsList && postHTML}
+            </ul>  
         </div>
     )
 }

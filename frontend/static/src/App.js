@@ -14,6 +14,8 @@ import AccountReactivation from "./components/account_reactivation/AccountReacti
 function App() {
 
   const [accountInfo, setAccountInfo] = useState(null)
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [postsList, setPostsList] = useState(null)
   const navigate = useNavigate();
   const location = useLocation()
 
@@ -25,15 +27,20 @@ function App() {
   }, []); 
 
   useEffect(() => {
-    if(accountInfo && !accountInfo.active) {
+    if(!accountInfo && Cookies.get('authorization')) {
+        getLoginInfo(setAccountInfo, setLoggedIn)
+    }
+  }, [loggedIn])
+  
+  useEffect(() => {
+    if(accountInfo && accountInfo.active === false) {
       navigate('/account-reactivation/')
     }
   }, [accountInfo])
 
-
   const displaySidebar = () => {
     
-    if (location.pathname !== '/edit/' && location.pathname !== '/delete-account/' && location.pathname !== '/account-reactivation/' && location.pathname !== '/login' && location.pathname !== '/login/') {
+    if (location.pathname === '/' || location.pathname === '/account-view/') {
       return true
     } else {
       return false
@@ -42,21 +49,21 @@ function App() {
 
   const sidebarHTML = (
       <div className="sidebar">
-            <button type="button" onClick={() => handleLogout(setAccountInfo, navigate)}>Logout</button>
+            <button type="button" onClick={() => handleLogout(setAccountInfo, navigate, setLoggedIn)}>Logout</button>
             <button type="button" onClick={() => navigate('/account-view/')}>View Profile</button>
             {location.pathname !== '/' && <button onClick={() => navigate('/')}>Home</button>}
       </div>
   )
 
 
-
+  console.log(accountInfo)
   return (
     <div className="App">
       {displaySidebar() && sidebarHTML}
       <Routes>
-        <Route path='/' element={<HomePage setAccountInfo={setAccountInfo} accountInfo={accountInfo}/>}/>
-        <Route path='login' element={<LoginRegis setAccountInfo={setAccountInfo} />}/>
-        <Route path='account-view' element={<AccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo}/>}/>
+        <Route path='/' element={<HomePage setAccountInfo={setAccountInfo} accountInfo={accountInfo} postsList={postsList} setPostsList={setPostsList}/>}/>
+        <Route path='login' element={<LoginRegis setAccountInfo={setAccountInfo} setLoggedIn={setLoggedIn}/>}/>
+        <Route path='account-view' element={<AccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} postsList={postsList} />}/>
         <Route path='edit' element={<EditAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo}/>}/>
         <Route path='delete-account' element={<AccountDeletion setAccountInfo={setAccountInfo}/>}/>
         <Route path='account-reactivation' element={<AccountReactivation setAccountInfo={setAccountInfo}/>}/>

@@ -4,7 +4,7 @@ export const handleErrors = (err) => {
     console.warn(err);
 }
 
-export const handleLogout = (setAccountInfo, navigate) => {
+export const handleLogout = (setAccountInfo, navigate, setLoggedIn) => {
     const logout = async () => {
         const options = {
             method: 'POST',
@@ -20,6 +20,7 @@ export const handleLogout = (setAccountInfo, navigate) => {
         } else {
           Cookies.remove('authorization')
           setAccountInfo(null);
+          setLoggedIn(false);
           navigate('/login/');
         }
     }
@@ -33,6 +34,6 @@ export const getLoginInfo = async (setAccountInfo) => {
         throw new Error('Response was not ok!')
       } else {
         const data = await response.json()
-        setAccountInfo(data[0])
+        setAccountInfo(data)
       }
     }

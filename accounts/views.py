@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework import generics, views, authentication, response
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -22,19 +22,22 @@ class AccountListAPIView(generics.ListCreateAPIView):
 class AccountCreateAPIView(generics.CreateAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    # permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
+        # import pdb
+        # pdb.set_trace()
         serializer.save(user=self.request.user)
+        serializer.save(active=True)
 
 
-class UserAccount(generics.ListAPIView):
+class UserAccount(generics.RetrieveAPIView):
+    queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    permission_classes = (IsAuthenticated,)
 
-    def get_queryset(self):
-        user = self.request.user.id
-        return Account.objects.filter(user=user)
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, user=self.request.user)
+        return obj
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -44,6 +47,16 @@ class UserAccountDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     permission_classes = (isUserOnly,)
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, user=self.request.user)
+        return obj
+
+    def perform_create(self, serializer):
+        # import pdb
+        # pdb.set_trace()
+        serializer.save(active=True)
 
 
 class DeactivateAccount(views.APIView):

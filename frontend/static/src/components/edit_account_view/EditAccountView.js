@@ -48,8 +48,11 @@ function EditAccountView({accountInfo, setAccountInfo}) {
         e.preventDefault();
 
         let editObject = new FormData();
-        
-        if (edit.alias === '' && edit.bio !== '') {
+
+        if (edit.alias !== '' && edit.bio !== '') {
+            editObject.append('bio', edit.bio);
+            editObject.append('alias', edit.alias);
+        } else if (edit.alias === '' && edit.bio !== '') {
             editObject.append('bio', edit.bio);
         } else if (edit.bio === '' && edit.alias !== '') {
             editObject.append('alias', edit.alias);
@@ -58,6 +61,7 @@ function EditAccountView({accountInfo, setAccountInfo}) {
         if (picture) {
             editObject.append('profile_img', picture);
         }
+
 
         const editAccount = async () => {
             const options = {
@@ -68,7 +72,7 @@ function EditAccountView({accountInfo, setAccountInfo}) {
                 body: editObject,
 
             }
-            const response = await fetch(`/api/v1/accounts/user/${accountInfo.id}/`, options).catch(handleErrors);
+            const response = await fetch(`/api/v1/accounts/user/detail/`, options).catch(handleErrors);
 
             if(!response.ok) {
                 throw new Error('Response was not ok!');

@@ -14,7 +14,7 @@ function AccountReactivation({setAccountInfo}) {
             } else {
                 const data = await response.json()
                 console.log(data)
-                setAccountInfo(data[0])
+                setAccountInfo(data)
                 navigate('/')
             }
         }

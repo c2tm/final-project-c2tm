@@ -1,9 +1,9 @@
-from django.shortcuts import render
-from rest_framework import generics
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .models import Post
-from .serializers import PostSerialzer
+from .models import Answer, Post
+from .serializers import AnswerSerializer, PostSerialzer
 from .permissions import isUserOnly
 
 # Create your views here.
@@ -46,3 +46,18 @@ class AdminViewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerialzer
     permission_classes = (IsAdminUser,)
+
+
+class AnswerListCreateAPIView(generics.ListCreateAPIView):
+
+    serializer_class = AnswerSerializer
+
+    def get_queryset(self):
+        user = self.request.user.id
+        return Answer.objects.filter(user=user)
+
+
+def AddLikes(self):
+    post = get_object_or_404(self.request.POST.get('id'))
+    post.likes.add(self.request.user)
+    return response.Response(post.likes)

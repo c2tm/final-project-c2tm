@@ -1,0 +1,49 @@
+.homepage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(22, 22, 22);
+  margin: 2rem 0 0 0;
+  padding: 16px 24px 16px 24px;
+}
+
+.post-answers {
+  display: flex;
+  width: 100%;
+}
+
+.thumbnail {
+  width: 30%;
+}
+
+.thumbnail > img {
+  height: 576px;
+  width: 1024px;
+}
+
+.answer {
+  width: 50%;
+}
+
+.answer:hover {
+  background-color: purple;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.video {
+  width: 30%;
+}
+
+.video > video {
+  height: 576px;
+  width: 1024px;
+}
