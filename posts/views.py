@@ -56,8 +56,19 @@ class AnswerListCreateAPIView(generics.ListCreateAPIView):
         user = self.request.user.id
         return Answer.objects.filter(user=user)
 
+    def perform_create(self, serializer):
+        """
+        Saves the user information and sets it to user field
+        """
+        serializer.save(user=self.request.user)
 
-def AddLikes(self):
-    post = get_object_or_404(self.request.POST.get('id'))
-    post.likes.add(self.request.user)
-    return response.Response(post.likes)
+
+# class LikeAndUnlikeView(generics.APIView):
+#     def post(self, request, post_id):
+#         post = Post.objects.get(pk=post_id)
+#         if post.likes.filter(pk=request.user.pk).exists():
+#             post.likes.remove(request.user)
+#             return response.Response({'message': 'unliked!'})
+#         else:
+#             post.likes.add(request.user)
+#             return response.Response({'message': 'liked!'})

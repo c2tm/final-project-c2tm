@@ -20,6 +20,12 @@
   width: 100%;
 }
 
+.post-answers-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .thumbnail {
   width: 30%;
 }
@@ -30,13 +36,45 @@
 }
 
 .answer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 50%;
+  height: 3rem;
+  background: none;
+  color: white;
+  border: none;
+  padding: 0;
+}
+
+.answer > p {
+  margin-bottom: 0;
 }
 
 .answer:hover {
   background-color: purple;
   transition: 0.2s;
   cursor: pointer;
+}
+
+.answer-post-guess {
+  width: 50%;
+}
+
+.answer-submit-button {
+  margin: 1rem 0 0 0;
+}
+
+.correct-answer {
+  border: 2px solid green;
+}
+
+.incorrect-answer {
+  border: 2px solid red;
+}
+
+.selected-answer {
+  background-color: rgb(168, 3, 168);
 }
 
 .video {

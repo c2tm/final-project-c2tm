@@ -11,22 +11,6 @@ function HomePage({setAccountInfo, accountInfo, setPostsList, postsList}) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(!postsList) {
-            const getPosts = async () => {
-                const response = await fetch('/api/v1/posts/').catch(handleErrors)
-    
-                if(!response.ok) {
-                    throw new Error('Response was not ok!')
-                } else {
-                    const data = await response.json()
-                    setPostsList(data);
-                }
-            }
-            getPosts()
-        }
-    }, [])
-
-    useEffect(() => {
         if(accountInfo) {
             forceUpdate(!update)
         }
@@ -36,7 +20,7 @@ function HomePage({setAccountInfo, accountInfo, setPostsList, postsList}) {
 
     if(postsList && accountInfo) {
         postsListHTML = postsList.map(post => (
-            <Post post={post} accountInfo={accountInfo}/>
+            <Post post={post} accountInfo={accountInfo} setPostsList={setPostsList} postsList={postsList} key={post.id}/>
         ))
     } else {
         postsListHTML = null

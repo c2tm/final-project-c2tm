@@ -4,7 +4,7 @@ import LoginRegis from './components/login_regis/LoginRegis';
 import './App.css';
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { handleLogout, getLoginInfo } from "./utitlties/Utility";
+import { handleLogout, getLoginInfo, handleErrors } from "./utitlties/Utility";
 import AccountView from "./components/account_view/AccountView";
 import EditAccountView from "./components/edit_account_view/EditAccountView";
 import AccountDeletion from "./components/account_deletion/AccountDeletion";
@@ -38,6 +38,22 @@ function App() {
     }
   }, [accountInfo])
 
+  useEffect(() => {
+    if(!postsList) {
+        const getPosts = async () => {
+            const response = await fetch('/api/v1/posts/').catch(handleErrors)
+
+            if(!response.ok) {
+                throw new Error('Response was not ok!')
+            } else {
+                const data = await response.json()
+                setPostsList(data);
+            }
+        }
+        getPosts()
+    }
+}, [])
+
   const displaySidebar = () => {
     
     if (location.pathname === '/' || location.pathname === '/account-view/') {
@@ -57,6 +73,7 @@ function App() {
 
 
   console.log(accountInfo)
+  console.log(postsList)
   return (
     <div className="App">
       {displaySidebar() && sidebarHTML}
