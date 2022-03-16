@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { getLoginInfo, handleErrors } from "../../utitlties/Utility";
 import './HomePage.css'
-import Post from './Post';
+import Post from '../posts/Post';
 
-function HomePage({setAccountInfo, accountInfo, setPostsList, postsList}) {
+function HomePage({setAccountInfo, accountInfo, setPostsList, postsList, setUserToGet}) {
 
     const [update, forceUpdate] = useState(true)
     const navigate = useNavigate()
@@ -20,7 +20,7 @@ function HomePage({setAccountInfo, accountInfo, setPostsList, postsList}) {
 
     if(postsList && accountInfo) {
         postsListHTML = postsList.map(post => (
-            <Post post={post} accountInfo={accountInfo} setPostsList={setPostsList} postsList={postsList} key={post.id}/>
+            <Post post={post} accountInfo={accountInfo} setPostsList={setPostsList} postsList={postsList} setUserToGet={setUserToGet} key={post.id}/>
         ))
     } else {
         postsListHTML = null

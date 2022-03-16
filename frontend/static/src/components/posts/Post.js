@@ -1,11 +1,15 @@
 import Cookies from "js-cookie";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { handleErrors } from "../../utitlties/Utility";
 
-function Post({post, accountInfo, setPostsList, postsList}) {
+function Post({post, accountInfo, setPostsList, postsList, setUserToGet}) {
 
     const [answer1State, setAnswer1State] = useState(false);
     const [answer2State, setAnswer2State] = useState(false);
     const [forceUpdate, setForceUpdate] = useState(true);
+
+    const navigate = useNavigate()
     
     const handleAnswer1 = () => {
         for(let i = 0; i < post.answers.length; i++) {
@@ -73,7 +77,7 @@ function Post({post, accountInfo, setPostsList, postsList}) {
                 body: JSON.stringify(newAnswer)
             }
 
-            const response = await fetch('/api/v1/posts/answers/', options)
+            const response = await fetch('/api/v1/posts/answers/', options).catch(handleErrors)
 
             if(!response.ok) {
                 throw new Error('Response was not ok');
@@ -92,10 +96,70 @@ function Post({post, accountInfo, setPostsList, postsList}) {
         submitAnswer()
     }
 
+    const handleLikeClick = e => {
+        const likeObj = {
+            post_id: post.id
+        }
+
+        const likeOrUnlike = async () => {
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'X-CSRFToken': Cookies.get('csrftoken')
+                },
+                body: JSON.stringify(likeObj),
+            }
+
+            const response = await fetch(`/api/v1/posts/like/`, options).catch(handleErrors);
+
+            if(!response.ok) {
+                throw new Error('Response was not ok!');
+            } else {
+                const data = await response.json();
+                console.log(data);
+                const currentPostIndex = postsList.findIndex(e => e.id === post.id);
+                if(postsList[currentPostIndex].likes.includes(accountInfo.user)) {
+                    let copyList = postsList;
+                    let likeArray = copyList[currentPostIndex].likes;
+                    const newLikeArray = likeArray.filter(user => user !== accountInfo.user)
+                    copyList[currentPostIndex].likes = newLikeArray;
+                    setPostsList(copyList);
+                    setForceUpdate(!forceUpdate);
+                } else {
+                    let copyList = postsList;
+                    let newLikeArray = copyList[currentPostIndex].likes;
+                    newLikeArray.push(accountInfo.user);
+                    copyList[currentPostIndex].likes = newLikeArray;
+                    setPostsList(copyList);
+                    setForceUpdate(!forceUpdate);
+                }
+                
+            }
+        }
+        likeOrUnlike();
+    }
+
+    const handleLikeAndUnlikeButtonHTML = () => {
+        const currentPostIndex = postsList.findIndex(e => e.id === post.id);
+        if(postsList[currentPostIndex].likes.includes(accountInfo.user)) {
+            return <button type="button" onClick={handleLikeClick}>Unlike</button>
+        } else {
+            return <button type="button" onClick={handleLikeClick}>Like</button>
+        }
+    }
+
+    const handleNameClick = () => {
+        if(accountInfo.user !== post.user){
+            navigate(`/${post.user}/view/`)
+        } else {
+            navigate('/current-user-account-view/')
+        }
+    }
 
     const postGuessHTML = (
-        <div className="post">
-            <h1>{post.account_alias}</h1>
+        <div className="post"> 
+            <h1 onClick={handleNameClick}>{post.account_alias}</h1>
             <h2>{post.username}</h2>
             <div className="video">
                 <video controls>
@@ -104,8 +168,12 @@ function Post({post, accountInfo, setPostsList, postsList}) {
             </div>
             <div>
                 <p>{`${post.likes.length} Likes`}</p>
-                {post.user !== accountInfo.user ? <button type="button">Like</button> : null}
+                {post.user !== accountInfo.user ? handleLikeAndUnlikeButtonHTML() : null}
             </div>
+            <div>
+                {post.phase === 'SB' && <button type="type">Edit</button>}
+            </div>
+            <h3>{post.question}</h3>
             <div className="post-answers">
                 <div className={`answer-post-guess ${handleAnswer1()}`}>
                     <p>{post.answer1}</p>

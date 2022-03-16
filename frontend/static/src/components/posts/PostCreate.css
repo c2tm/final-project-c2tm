@@ -1,0 +1,11 @@
+.post-create-container {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.create-form-container {
+  width: 30%;
+  margin: 2rem 0 0 0;
+}

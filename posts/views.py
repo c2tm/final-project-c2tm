@@ -1,7 +1,8 @@
+import json
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-
+from rest_framework.decorators import api_view
 from .models import Answer, Post
 from .serializers import AnswerSerializer, PostSerialzer
 from .permissions import isUserOnly
@@ -63,12 +64,25 @@ class AnswerListCreateAPIView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
-# class LikeAndUnlikeView(generics.APIView):
-#     def post(self, request, post_id):
-#         post = Post.objects.get(pk=post_id)
-#         if post.likes.filter(pk=request.user.pk).exists():
-#             post.likes.remove(request.user)
-#             return response.Response({'message': 'unliked!'})
-#         else:
-#             post.likes.add(request.user)
-#             return response.Response({'message': 'liked!'})
+@api_view(('POST',))
+def LikeAndUnlikeView(request):
+    dump_data = json.dumps(request.data)
+    data = json.loads(dump_data)
+    post = get_object_or_404(Post, id=data['post_id'])
+    check_if_liked = filter(lambda x: x == request.user, post.likes.all())
+    liked_list = list(check_if_liked)
+    if(len(liked_list) > 0):
+        post.likes.remove(request.user)
+        return response.Response({'message': 'Unliked!'})
+    else:
+        post.likes.add(request.user)
+        return response.Response({'message': 'Liked!'})
+
+
+@api_view(('POST',))
+def PostListByUserView(request):
+    post_dump_data = json.dumps(request.data)
+    post_data = json.loads(post_dump_data)
+    user = post_data['user']
+    post_list = Post.objects.filter(user=user)
+    return response.Response(post_list)

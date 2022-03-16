@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 
-from accounts.models import Account
+from accounts.models import Account, User
 
 # Create your models here.
 
@@ -31,7 +31,7 @@ class Post(models.Model):
     thumbnail = models.ImageField(
         upload_to='posts/thumbnails/', default='posts/thumbnails/real14.jpg')
     likes = models.ManyToManyField(
-        Account, related_name='post_likes', blank=True)
+        User, related_name='post_likes', blank=True)
 
     def __str__(self):
         return self.question[:50]

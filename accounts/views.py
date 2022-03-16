@@ -80,3 +80,13 @@ class ActivateAccount(views.APIView):
         account.save()
         serializer = AccountSerializer(account)
         return response.Response(serializer.data)
+
+
+@api_view(('POST',))
+def AccountByUser(request):
+    user_dump_data = json.dumps(request.data)
+    user_data = json.loads(user_dump_data)
+    user = user_data['user']
+    account = Account.objects.get(user=user)
+    serializer = AccountSerializer(account)
+    return response.Response(serializer.data)

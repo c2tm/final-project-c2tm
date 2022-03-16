@@ -1,12 +1,28 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { getLoginInfo, handleErrors } from "../../utitlties/Utility"
-import Post from "../home_page/Post";
-import './AccountView.css'
+import { getLoginInfo, handleErrors } from "../../../utitlties/Utility"
+import Post from "../../posts/Post"
+import './YourAccountView.css'
 
-function AccountView({accountInfo, setAccountInfo, postsList}) {
+function YourAccountView({accountInfo, setAccountInfo, postsList, userPostsList, setUserPostsList}) {
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(!userPostsList) {
+            const getUserPosts = async () => {
+                const response = await fetch('/api/v1/posts/user/').catch(handleErrors);
+                
+                if(!response.ok) {
+                    throw new Error('Response was not ok!');
+                } else {
+                    const data = await response.json();
+                    setUserPostsList(data);
+                }
+            }
+            getUserPosts();
+        }
+    }, [])
 
     const handleEditClick = () => {
         navigate('/edit/')
@@ -43,9 +59,9 @@ function AccountView({accountInfo, setAccountInfo, postsList}) {
 
     let postHTML;
 
-    if(postsList) {
-        postHTML = postsList.filter(post => post.user === accountInfo.user).map(post => (
-            <Post post={post} accountInfo={accountInfo} />
+    if(userPostsList) {
+        postHTML = userPostsList.map(post => (
+            <Post post={post} accountInfo={accountInfo} postsList={userPostsList} key={post.id}/>
         ))
     }
 
@@ -53,10 +69,10 @@ function AccountView({accountInfo, setAccountInfo, postsList}) {
         <div className="account-view">
             {accountInfo && accountHTML}
             <ul>
-                {postsList && postHTML}
+                {userPostsList && postHTML}
             </ul>  
         </div>
     )
 }
 
-export default AccountView
+export default YourAccountView

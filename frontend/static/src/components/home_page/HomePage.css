@@ -85,3 +85,7 @@
   height: 576px;
   width: 1024px;
 }
+
+.post > h1:hover {
+  cursor: pointer;
+}
