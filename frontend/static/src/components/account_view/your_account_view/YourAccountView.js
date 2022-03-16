@@ -4,7 +4,9 @@ import { getLoginInfo, handleErrors } from "../../../utitlties/Utility"
 import Post from "../../posts/Post"
 import './YourAccountView.css'
 
-function YourAccountView({accountInfo, setAccountInfo, postsList, userPostsList, setUserPostsList}) {
+function YourAccountView({accountInfo, setAccountInfo, postsList, setPostsList, userPostsList, setUserPostsList}) {
+
+    const [yourAccForceUpdate, setYourAccForceUpdate] = useState(true)
 
     const navigate = useNavigate();
 
@@ -17,7 +19,11 @@ function YourAccountView({accountInfo, setAccountInfo, postsList, userPostsList,
                     throw new Error('Response was not ok!');
                 } else {
                     const data = await response.json();
-                    setUserPostsList(data);
+                    let copyList = data
+                    copyList.sort((a, b) => {
+                        return b.id - a.id;
+                    })
+                    setUserPostsList(copyList);
                 }
             }
             getUserPosts();
@@ -61,7 +67,7 @@ function YourAccountView({accountInfo, setAccountInfo, postsList, userPostsList,
 
     if(userPostsList) {
         postHTML = userPostsList.map(post => (
-            <Post post={post} accountInfo={accountInfo} postsList={userPostsList} key={post.id}/>
+            <Post post={post} accountInfo={accountInfo} postsList={userPostsList} setPostsList={setPostsList} userPostsList={userPostsList} setUserPostsList={setUserPostsList} yourAccForceUpdate={yourAccForceUpdate} setYourAccForceUpdate={setYourAccForceUpdate} key={post.id}/>
         ))
     }
 

@@ -11,6 +11,7 @@ import AccountDeletion from "./components/account_deletion/AccountDeletion";
 import AccountReactivation from "./components/account_reactivation/AccountReactivation";
 import NormalAccountView from "./components/account_view/normal_account_view/NormalAccountView";
 import PostCreate from "./components/posts/PostCreate";
+import PostEdit from "./components/posts/PostEdit";
 
 
 function App() {
@@ -90,12 +91,13 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage setAccountInfo={setAccountInfo} accountInfo={accountInfo} postsList={postsList} setPostsList={setPostsList} />}/>
         <Route path='login' element={<LoginRegis setAccountInfo={setAccountInfo} setLoggedIn={setLoggedIn}/>}/>
-        <Route path='current-user-account-view' element={<YourAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} postsList={postsList} userPostsList={userPostsList} setUserPostsList={setUserPostsList}/>}/>
+        <Route path='current-user-account-view' element={<YourAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} postsList={postsList} setPostsList={setPostsList} userPostsList={userPostsList} setUserPostsList={setUserPostsList}/>}/>
         <Route path=':accountId/view' element={<NormalAccountView userAccountInfo={userAccountInfo} setUserAccountInfo={setUserAccountInfo} postsList={postsList} setPostsList={setPostsList} accountInfo={accountInfo}/>}/>
         <Route path='edit' element={<EditAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo}/>}/>
         <Route path='delete-account' element={<AccountDeletion setAccountInfo={setAccountInfo}/>}/> 
         <Route path='account-reactivation' element={<AccountReactivation setAccountInfo={setAccountInfo}/>}/>
-        <Route path='create-post' element={<PostCreate postsList={postsList} setPostsList={setPostsList} accountInfo={accountInfo}/>}/>
+        <Route path='create-post' element={<PostCreate accountInfo={accountInfo} setUserPostsList={setUserPostsList} userPostsList={userPostsList}/>}/>
+        <Route path='edit-post/:postId' element={<PostEdit accountInfo={accountInfo} setUserPostsList={setUserPostsList} userPostsList={userPostsList}/>}/>
       </Routes>
 
     </div>

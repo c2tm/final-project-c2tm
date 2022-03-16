@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { handleErrors } from '../../utitlties/Utility';
 
-function PostCreate({accountInfo, postsList, setPostsList}) {
+function PostCreate({accountInfo, userPostsList, setUserPostsList}) {
 
     const [video, setVideo] = useState(undefined);
     const [answerButton, setAnswerButton] = useState(true);
@@ -57,7 +57,9 @@ function PostCreate({accountInfo, postsList, setPostsList}) {
                 throw new Error('Response was not ok!');
             } else {
                 const data = await response.json();
-                console.log(data);
+                let copyList = userPostsList;
+                copyList.unshift(data);
+                setUserPostsList(copyList);
                 navigate('/current-user-account-view/');
             }
         }
@@ -95,7 +97,7 @@ function PostCreate({accountInfo, postsList, setPostsList}) {
             </Form>
         </div>
     )
-    
+
     return (
         <div className='post-create-container'>
             {postCreateFormHTML}

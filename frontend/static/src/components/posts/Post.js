@@ -2,12 +2,16 @@ import Cookies from "js-cookie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleErrors } from "../../utitlties/Utility";
+import './Post.css'
+import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
 
-function Post({post, accountInfo, setPostsList, postsList, setUserToGet}) {
+function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUserPostsList, yourAccForceUpdate, setYourAccForceUpdate}) {
 
     const [answer1State, setAnswer1State] = useState(false);
     const [answer2State, setAnswer2State] = useState(false);
     const [forceUpdate, setForceUpdate] = useState(true);
+    const [show, setShow] = useState(false);
 
     const navigate = useNavigate()
     
@@ -157,8 +161,51 @@ function Post({post, accountInfo, setPostsList, postsList, setUserToGet}) {
         }
     }
 
+    const handleDelete = () => {
+        const deletePost = async () => {
+            const options = {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': Cookies.get('csrftoken')
+                }
+            }
+            const response = await fetch(`/api/v1/posts/user/${post.id}/`, options).catch(handleErrors);
+
+            if(!response.ok) {
+                throw new Error('Response was not ok!')
+            } else {
+                let copyList = userPostsList;
+                const postIndex = copyList.findIndex(p => p.id === post.id);
+                copyList.splice(postIndex, 1);
+                setUserPostsList(copyList);
+                setShow(false);
+                setYourAccForceUpdate(!yourAccForceUpdate);
+            }
+        }
+        deletePost();
+    }
+
     const postGuessHTML = (
-        <div className="post"> 
+        <div className="post">
+            <Modal show={show} onHide={() => setShow(false)} centered>
+                <div>
+                    <div>
+                        <button type='button' onClick={() => setShow(false)}>X</button>
+                        <h1>Are you sure you want to delete this post?</h1>
+                    </div>              
+                    <div className="modal-buttons">
+                        <Button variant="secondary" onClick={() => setShow(false)}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={handleDelete}>
+                            Delete
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
+            <div>
+                {post.user === accountInfo.user ? <button type="button" onClick={() => setShow(true)}>Delete</button> : null}
+            </div>
             <h1 onClick={handleNameClick}>{post.account_alias}</h1>
             <h2>{post.username}</h2>
             <div className="video">
@@ -171,7 +218,7 @@ function Post({post, accountInfo, setPostsList, postsList, setUserToGet}) {
                 {post.user !== accountInfo.user ? handleLikeAndUnlikeButtonHTML() : null}
             </div>
             <div>
-                {post.phase === 'SB' && <button type="type">Edit</button>}
+                {post.phase === 'SB' && <button type="type" onClick={() => navigate(`/edit-post/${post.id}`)}>Edit</button>}
             </div>
             <h3>{post.question}</h3>
             <div className="post-answers">
