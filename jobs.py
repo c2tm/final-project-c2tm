@@ -16,3 +16,6 @@ sched = BlockingScheduler()
 @sched.scheduled_job('interval', minutes=1)
 def timed_job():
     print('hi')
+
+
+sched.start()
