@@ -36,9 +36,14 @@ function App() {
 
   useEffect(() => {
 
+    if(!Cookies.get('sessionid')) {
+      handleLogout(setAccountInfo, navigate, setLoggedIn, setUserAccountInfo, setUserPostsList)
+    }
+
     if(!Cookies.get('authorization')) {
       navigate('login');
-    } 
+    }
+
   }, []); 
 
   useEffect(() => {
