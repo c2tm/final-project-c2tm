@@ -65,7 +65,7 @@
 }
 
 .selected-answer {
-  background-color: rgb(168, 3, 168);
+  background-color: rgb(168, 3, 168) !important;
 }
 
 .video {

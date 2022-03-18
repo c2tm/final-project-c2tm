@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate, useLocation, useParams } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import HomePage from './components/home_page/HomePage';
 import LoginRegis from './components/login_regis/LoginRegis';
 import './App.css';
@@ -32,11 +32,10 @@ function App() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const params = useParams();
 
   useEffect(() => {
 
-    if(!Cookies.get('sessionid')) {
+    if(!Cookies.get('sessionid') && Cookies.get('authorization')) {
       handleLogout(setAccountInfo, navigate, setLoggedIn, setUserAccountInfo, setUserPostsList)
     }
 
