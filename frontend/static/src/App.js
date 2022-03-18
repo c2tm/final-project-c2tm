@@ -70,6 +70,22 @@ function App() {
   }, [])
 
   useEffect(() => {
+    if(!postsList) {
+        const getPosts = async () => {
+            const response = await fetch('/api/v1/posts/').catch(handleErrors)
+
+            if(!response.ok) {
+                throw new Error('Response was not ok!')
+            } else {
+                const data = await response.json()
+                setPostsList(data);
+            }
+        }
+        getPosts()
+    }
+  }, [loggedIn])
+
+  useEffect(() => {
     if(!loggedInUserInfo) {
         const getUser = async () => {
           const response = await fetch('/rest-auth/user/').catch(handleErrors);
