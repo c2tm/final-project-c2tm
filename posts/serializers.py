@@ -4,9 +4,12 @@ from .models import Answer, Post
 
 
 class AnswerSerializer(serializers.ModelSerializer):
+    user_points = serializers.ReadOnlyField(source='profile.points')
+
     class Meta:
         model = Answer
-        fields = ('user_answer', 'profile', 'post', 'user')
+        fields = ('user_answer', 'profile', 'post',
+                  'user_points', 'points_wagered', 'user',)
 
 
 class PostSerialzer(serializers.ModelSerializer):

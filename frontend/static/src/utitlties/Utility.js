@@ -4,7 +4,7 @@ export const handleErrors = (err) => {
     console.warn(err);
 }
 
-export const handleLogout = (setAccountInfo, navigate, setLoggedIn) => {
+export const handleLogout = (setAccountInfo, navigate, setLoggedIn, setUserInfo, setUserPostsList) => {
     const logout = async () => {
         const options = {
             method: 'POST',
@@ -20,6 +20,8 @@ export const handleLogout = (setAccountInfo, navigate, setLoggedIn) => {
         } else {
           Cookies.remove('authorization')
           setAccountInfo(null);
+          setUserInfo(null);
+          setUserPostsList(null);
           setLoggedIn(false);
           navigate('/login/');
         }
@@ -36,4 +38,4 @@ export const getLoginInfo = async (setAccountInfo) => {
         const data = await response.json()
         setAccountInfo(data)
       }
-    }
+}

@@ -11,6 +11,7 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
     const [answer1State, setAnswer1State] = useState(false);
     const [answer2State, setAnswer2State] = useState(false);
     const [forceUpdate, setForceUpdate] = useState(true);
+    const [wager, setWager] = useState('');
     const [show, setShow] = useState(false);
 
     const navigate = useNavigate()
@@ -69,6 +70,7 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
             user_answer: answer1State ? 'answer1' : 'answer2', 
             profile: accountInfo.id,
             post: post.id,
+            points_wagered: Number(wager),
         }
 
         const submitAnswer = async () => {
@@ -154,6 +156,7 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
     }
 
     const handleNameClick = () => {
+        console.log('iran')
         if(accountInfo.user !== post.user){
             navigate(`/${post.user}/view/`)
         } else {
@@ -234,7 +237,7 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
 
     const preGuessHTML = (
         <div className="post" >
-            <h1>{post.account_alias}</h1>
+            <h1 onClick={handleNameClick}>{post.account_alias}</h1>
             <h2>{post.username}</h2>
             <div className="thumbnail">
                 <img src={post.thumbnail} alt='video-thumbnail'/>
@@ -251,6 +254,8 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
                         <p>{post.answer2}</p>
                     </button>
                 </div>
+                <label>Points to wager:</label>
+                <input type='number' value={wager} onChange={e => setWager(e.target.value)}/>
                 <button type="submit" className="answer-submit-button">
                     Submit!
                 </button>

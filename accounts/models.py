@@ -19,6 +19,7 @@ class Account(models.Model):
     points = models.IntegerField(default=0)
     alltime_points = models.IntegerField(default=0)
     active = models.BooleanField(default=True)
+    flagged = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username

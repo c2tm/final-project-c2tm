@@ -12,6 +12,7 @@ import AccountReactivation from "./components/account_reactivation/AccountReacti
 import NormalAccountView from "./components/account_view/normal_account_view/NormalAccountView";
 import PostCreate from "./components/posts/PostCreate";
 import PostEdit from "./components/posts/PostEdit";
+import AdminView from "./components/admin_view/AdminView";
 
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
   const [postsList, setPostsList] = useState(null);
   
   const [userAccountInfo, setUserAccountInfo] = useState(null);
+
+  const [loggedInUserInfo, setLoggedInUserInfo] = useState(null);
+
+  const [submittedPostList, setSubmittedPostList] = useState(null)
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,11 +67,46 @@ function App() {
         }
         getPosts()
     }
+  }, [])
+
+  useEffect(() => {
+    if(!loggedInUserInfo) {
+        const getUser = async () => {
+          const response = await fetch('/rest-auth/user/').catch(handleErrors);
+
+          if(!response.ok) {
+            throw new Error('Response was not ok!');
+          } else {
+            const data = await response.json();
+            setLoggedInUserInfo(data);
+          }
+      }
+      getUser()
+    }
+    
+  }, [])
+
+  useEffect(() => {
+    if(!submittedPostList) {
+        const getSubmittedPosts = async () => { 
+            const response = await fetch('/api/v1/posts/admin/')
+
+            if(!response.ok) {
+                throw new Error('Response was not ok!')
+            } else {
+                const data = await response.json()
+                setSubmittedPostList(data)
+                console.log(data)
+            }
+
+        }
+        getSubmittedPosts()
+    }
 }, [])
 
   const displaySidebar = () => {
     
-    if (location.pathname === '/' || location.pathname === '/current-user-account-view/' || location.pathname.includes('view')) {
+    if (location.pathname === '/' || location.pathname === '/current-user-account-view/' || location.pathname.includes('view') || location.pathname === '/admin/') {
       return true
     } else {
       return false
@@ -76,15 +116,19 @@ function App() {
   const sidebarHTML = (
       <div className="sidebar">
             {location.pathname !== '/' && <button onClick={() => navigate('/')}>Home</button>}
-            <button type="button" onClick={() => handleLogout(setAccountInfo, navigate, setLoggedIn)}>Logout</button>
+            <button type="button" onClick={() => handleLogout(setAccountInfo, navigate, setLoggedIn, setUserAccountInfo, setUserPostsList)}>Logout</button>
             <button type="button" onClick={() => navigate('/current-user-account-view/')}>View Profile</button>
             <button type="button" onClick={() => navigate('/create-post/')}>Create Post</button>
+            {loggedInUserInfo && (loggedInUserInfo.is_superuser && <button type="button" onClick={() => navigate('/admin/')}>Admin View</button>)}
+            <div>{accountInfo && accountInfo.points}</div>
       </div>
   )
 
 
   console.log(accountInfo)
   console.log(postsList)
+  console.log(loggedInUserInfo)
+
   return (
     <div className="App">
       {displaySidebar() && sidebarHTML}
@@ -98,6 +142,7 @@ function App() {
         <Route path='account-reactivation' element={<AccountReactivation setAccountInfo={setAccountInfo}/>}/>
         <Route path='create-post' element={<PostCreate accountInfo={accountInfo} setUserPostsList={setUserPostsList} userPostsList={userPostsList}/>}/>
         <Route path='edit-post/:postId' element={<PostEdit accountInfo={accountInfo} setUserPostsList={setUserPostsList} userPostsList={userPostsList}/>}/>
+        <Route path="admin" element={<AdminView submittedPostList={submittedPostList} setSubmittedPostList={setSubmittedPostList}/>}/>
       </Routes>
 
     </div>

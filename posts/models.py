@@ -45,3 +45,4 @@ class Answer(models.Model):
                                 on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE, null=True)
+    points_wagered = models.IntegerField()
