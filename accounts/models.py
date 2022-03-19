@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
@@ -20,6 +21,7 @@ class Account(models.Model):
     alltime_points = models.IntegerField(default=0)
     active = models.BooleanField(default=True)
     flagged = models.BooleanField(default=False)
+    banned = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username

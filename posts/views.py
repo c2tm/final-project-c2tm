@@ -13,6 +13,12 @@ from .permissions import isUserOnly
 # Create your views here.
 
 
+class AllPostsListApiView(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerialzer
+    permission_classes = (IsAdminUser,)
+
+
 class PostListApiView(generics.ListAPIView):
     queryset = Post.objects.filter(phase='PB')
     serializer_class = PostSerialzer

@@ -11,17 +11,19 @@ function HomePage({loggedInUserInfo, setPostsList, postsList, setUserToGet}) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        const getPosts = async () => {
-            const response = await fetch('/api/v1/posts/').catch(handleErrors)
-      
-            if(!response.ok) {
-                throw new Error('Response was not ok!')
-            } else {
-                const data = await response.json()
-                setPostsList(data);
+        if(!postsList) {
+            const getPosts = async () => {
+                const response = await fetch('/api/v1/posts/').catch(handleErrors)
+          
+                if(!response.ok) {
+                    throw new Error('Response was not ok!')
+                } else {
+                    const data = await response.json()
+                    setPostsList(data);
+                }
             }
+            getPosts()
         }
-        getPosts()
     }, [])
 
     let postsListHTML;

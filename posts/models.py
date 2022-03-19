@@ -8,6 +8,7 @@ from accounts.models import Account, User
 PHASES = [
     ('SB', 'Submitted'),
     ('PB', 'Published'),
+    ('RJ', 'Rejected'),
 ]
 
 ANSWERS = [

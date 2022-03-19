@@ -193,6 +193,14 @@ function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, s
         setShow(false);
     }
 
+    const translatePhase = (obj) => {
+        if (obj.phase === 'SB') {
+            return 'Submitted';
+        } else {
+            return 'Rejected';
+        }
+    }
+
     const postGuessHTML = (
         <div className="post">
             <Modal show={show} onHide={() => setShow(false)} centered>
@@ -221,6 +229,7 @@ function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, s
                     <source src={post.video} type='video/mp4'/>               
                 </video>
             </div>
+            {(post.phase === 'SB' || post.phase === 'RJ') && translatePhase(post)}
             <div>
                 <p>{`${post.likes.length} Likes`}</p>
                 {post.user !== loggedInUserInfo.pk ? handleLikeAndUnlikeButtonHTML() : null}

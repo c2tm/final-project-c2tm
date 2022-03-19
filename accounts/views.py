@@ -13,7 +13,23 @@ import json
 class AccountListAPIView(generics.ListCreateAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class AccountListDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
     permission_classes = (IsAdminUser,)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class FlaggedAccountListAPIView(generics.ListCreateAPIView):
+    queryset = Account.objects.filter(flagged=True)
+    serializer_class = AccountSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -88,5 +104,17 @@ def AccountByUser(request):
     user_data = json.loads(user_dump_data)
     user = user_data['user']
     account = Account.objects.get(user=user)
+    serializer = AccountSerializer(account)
+    return response.Response(serializer.data)
+
+
+@api_view(('POST',))
+def FlagUser(request):
+    user_dump_data = json.dumps(request.data)
+    user_data = json.loads(user_dump_data)
+    user = user_data['user']
+    account = Account.objects.get(user=user)
+    account.flagged = True
+    account.save()
     serializer = AccountSerializer(account)
     return response.Response(serializer.data)

@@ -89,8 +89,8 @@ function App() {
         <Route path='delete-account' element={<AccountDeletion />}/> 
         <Route path='account-reactivation' element={<AccountReactivation setAccountInfo={setAccountInfo}/>}/>
         <Route path='create-post' element={<PostCreate setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
-        <Route path='edit-post/:postId' element={<PostEdit setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo} />}/>
-        <Route path="admin" element={<AdminView />}/>
+        <Route path='edit-post/:postId' element={<PostEdit setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
+        <Route path="admin" element={<AdminView postsList={postsList} setPostsList={setPostsList}/>}/>
       </Routes>
 
     </div>
