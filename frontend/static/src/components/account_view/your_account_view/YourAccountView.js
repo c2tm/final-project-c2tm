@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { getLoginInfo, handleErrors } from "../../../utitlties/Utility"
 import Post from "../../posts/Post"
 import './YourAccountView.css'
 
-function YourAccountView({accountInfo, setAccountInfo, postsList, setPostsList, userPostsList, setUserPostsList}) {
+function YourAccountView({accountInfo, setAccountInfo, setPostsList, userPostsList, setUserPostsList, loggedInUserInfo}) {
 
-    const [yourAccForceUpdate, setYourAccForceUpdate] = useState(true)
+    const [update, setUpdate] = useState(true)
 
     const navigate = useNavigate();
+    const params = useParams();
 
     useEffect(() => {
         if(!userPostsList) {
@@ -20,7 +21,7 @@ function YourAccountView({accountInfo, setAccountInfo, postsList, setPostsList, 
                 } else {
                     const data = await response.json();
                     let copyList = data
-                    copyList.sort((a, b) => {
+                        copyList.sort((a, b) => {
                         return b.id - a.id;
                     })
                     setUserPostsList(copyList);
@@ -28,6 +29,20 @@ function YourAccountView({accountInfo, setAccountInfo, postsList, setPostsList, 
             }
             getUserPosts();
         }
+
+        const getAccountInfo = async () => {
+            const response = await fetch('/api/v1/accounts/user/')
+      
+            if(!response.ok) {
+                console.log('i made it here')
+              throw new Error('Response was not ok!')
+            } else {
+              const data = await response.json()
+              setAccountInfo(data)
+            }
+      }
+      getAccountInfo()
+
     }, [])
 
     const handleEditClick = () => {
@@ -65,9 +80,9 @@ function YourAccountView({accountInfo, setAccountInfo, postsList, setPostsList, 
 
     let postHTML;
 
-    if(userPostsList) {
+    if(userPostsList && loggedInUserInfo) {
         postHTML = userPostsList.map(post => (
-            <Post post={post} accountInfo={accountInfo} postsList={userPostsList} setPostsList={setPostsList} userPostsList={userPostsList} setUserPostsList={setUserPostsList} yourAccForceUpdate={yourAccForceUpdate} setYourAccForceUpdate={setYourAccForceUpdate} key={post.id}/>
+            <Post post={post} loggedInUserInfo={loggedInUserInfo} postsList={userPostsList} setPostsList={setPostsList} userPostsList={userPostsList} setUserPostsList={setUserPostsList} update={update} setUpdate={setUpdate} key={post.id}/>
         ))
     }
 

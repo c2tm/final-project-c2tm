@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { handleErrors } from '../../utitlties/Utility';
 
-function PostCreate({accountInfo, userPostsList, setUserPostsList}) {
+function PostCreate({loggedInUserInfo, userPostsList, setUserPostsList}) {
 
     const [video, setVideo] = useState(undefined);
     const [answerButton, setAnswerButton] = useState(true);
@@ -34,7 +34,7 @@ function PostCreate({accountInfo, userPostsList, setUserPostsList}) {
         postFormData.append('answer1', newPost.answer1);
         postFormData.append('answer2', newPost.answer2);
         postFormData.append('video', video);
-        postFormData.append('account', accountInfo.id);
+        postFormData.append('account', loggedInUserInfo.account_id);
 
         if(answerButton) {
             postFormData.append('correct_answer', 'answer1');

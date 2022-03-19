@@ -13,7 +13,6 @@ function AccountReactivation({setAccountInfo}) {
                 throw new Error('Response was not ok!')
             } else {
                 const data = await response.json()
-                console.log(data)
                 setAccountInfo(data)
                 navigate('/')
             }
@@ -26,7 +25,7 @@ function AccountReactivation({setAccountInfo}) {
         <h1>This account is deactivated. Would you like to reactivate your account?</h1>
         <div>
             <button type="button" onClick={handleActivateClick}>Yes</button>
-            <button type="button" onClick={() => handleLogout(setAccountInfo, navigate)}>No</button>
+            <button type="button" onClick={() => handleLogout(navigate)}>No</button>
         </div>
     </div>
     )

@@ -14,7 +14,7 @@ function AccountDeletion({setAccountInfo}) {
             } else {
                 const data = await response.json()
                 console.log(data)
-                handleLogout(setAccountInfo, navigate)
+                handleLogout(navigate)
             }
         }
         deactivate();

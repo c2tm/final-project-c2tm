@@ -7,7 +7,7 @@ import './PostEdit.css'
 import Cookies from 'js-cookie';
 import { handleErrors } from '../../utitlties/Utility';
 
-function PostEdit({accountInfo, setUserPostsList, userPostsList}) {
+function PostEdit({loggedInUserInfo, setUserPostsList, userPostsList}) {
 
     const [video, setVideo] = useState(undefined);
     const [answerButton, setAnswerButton] = useState(true);
@@ -20,6 +20,20 @@ function PostEdit({accountInfo, setUserPostsList, userPostsList}) {
         answer1: '',
         answer2: '',
     })
+
+    const [placeholder, setPlaceholder] = useState(null)
+
+    useEffect(() => {
+        if(!placeholder) {
+            const postId = userPostsList.findIndex(post => post.id == params.postId);
+            const thisPost = userPostsList[postId]
+            setPlaceholder({
+                question: thisPost.question,
+                answer1: thisPost.answer1,
+                answer2: thisPost.answer2,
+            })
+        }
+    }, [])
 
     const handlePostChange = e => {
         const { name, value } = e.target;
@@ -44,7 +58,7 @@ function PostEdit({accountInfo, setUserPostsList, userPostsList}) {
             editFormData.append('answer2', editPost.answer2);
         }
 
-        editFormData.append('account', accountInfo.id);
+        editFormData.append('account', loggedInUserInfo.account_id);
 
         if(video) {
             editFormData.append('video', video);
@@ -71,7 +85,6 @@ function PostEdit({accountInfo, setUserPostsList, userPostsList}) {
             } else {
                 const data = await response.json();
                 const copyList = userPostsList;
-                console.log(copyList)
                 const postId = copyList.findIndex(post => post.id == data.id);
                 copyList.splice(postId, 1, data);
                 setUserPostsList(copyList);
@@ -79,6 +92,10 @@ function PostEdit({accountInfo, setUserPostsList, userPostsList}) {
             }
         }
         editForm();
+    }
+
+    if(!placeholder) {
+        return('Loading')
     }
 
     const postEditFormHTML = (
@@ -90,13 +107,13 @@ function PostEdit({accountInfo, setUserPostsList, userPostsList}) {
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Edit Question</Form.Label>
-                    <Form.Control type="text" name="question" placeholder='In this video, does...?' value={editPost.question} onChange={handlePostChange}/>
+                    <Form.Control type="text" name="question" placeholder={placeholder.question} value={editPost.question} onChange={handlePostChange}/>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Edit Answer1</Form.Label>
-                    <Form.Control type="text" name="answer1" placeholder='This?' value={editPost.answer1} onChange={handlePostChange}/>
+                    <Form.Control type="text" name="answer1" placeholder={placeholder.answer1} value={editPost.answer1} onChange={handlePostChange}/>
                     <Form.Label>Edit Answer2</Form.Label>
-                    <Form.Control type="text" name="answer2" placeholder='That?' value={editPost.answer2} onChange={handlePostChange}/>
+                    <Form.Control type="text" name="answer2" placeholder={placeholder.answer2} value={editPost.answer2} onChange={handlePostChange}/>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Which answer is correct?</Form.Label>
@@ -112,8 +129,6 @@ function PostEdit({accountInfo, setUserPostsList, userPostsList}) {
             </Form>
         </div>
     )
-
-    console.log(params.accountId);
 
     return (
         <div className='post-edit-container' >

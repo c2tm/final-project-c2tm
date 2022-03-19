@@ -5,8 +5,9 @@ import { getLoginInfo, handleErrors } from "../../../utitlties/Utility"
 import Post from "../../posts/Post"
 import './NormalAccountView.css'
 
-function NormalAccountView({userAccountInfo, postsList, setUserAccountInfo, accountInfo, setPostsList}) {
+function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserInfo}) {
 
+   const [userAccountInfo, setUserAccountInfo] = useState(null);
    const params = useParams();
 
     useEffect(() => {
@@ -68,9 +69,9 @@ function NormalAccountView({userAccountInfo, postsList, setUserAccountInfo, acco
 
     console.log(params.accountId)
 
-    if(postsList) {
+    if(postsList && loggedInUserInfo) {
         postHTML = postsList.filter(post => post.user==params.accountId).map(post => (
-            <Post post={post} accountInfo={accountInfo} postsList={postsList} setPostsList={setPostsList} key={post.id}/>
+            <Post post={post} loggedInUserInfo={loggedInUserInfo} postsList={postsList} setPostsList={setPostsList} key={post.id}/>
         ))
     }
 

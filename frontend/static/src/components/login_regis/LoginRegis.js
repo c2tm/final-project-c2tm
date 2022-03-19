@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import { handleErrors } from '../../utitlties/Utility'
 import { useNavigate } from 'react-router-dom'
 
-function LoginRegis({setAccountInfo, setLoggedIn}) {
+function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
 
     const [html, setHtml] = useState(true);
 
@@ -75,8 +75,8 @@ function LoginRegis({setAccountInfo, setLoggedIn}) {
             } else {
                 const data = await response.json()
                 if (data.hasOwnProperty('key')) {
-                    Cookies.set('authorization', `Token ${data}`)
-                    setLoggedIn(true);
+                    Cookies.set('authorization', `Token ${data.key}`)
+                    setLoggedInUserInfo(data);
                     navigate('/');
                     
                 } else {
@@ -111,7 +111,8 @@ function LoginRegis({setAccountInfo, setLoggedIn}) {
                 throw new Error('Response was not ok!')
             } else {
                 const data = await response.json()
-                Cookies.set('authorization', `Token ${data}`)
+                Cookies.set('authorization', `Token ${data.key}`);
+                setLoggedInUserInfo(data);
                 createAccount();
                 navigate('/');
             }

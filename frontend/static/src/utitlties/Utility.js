@@ -4,7 +4,7 @@ export const handleErrors = (err) => {
     console.warn(err);
 }
 
-export const handleLogout = (setAccountInfo, navigate, setLoggedIn, setUserInfo, setUserPostsList) => {
+export const handleLogout = (navigate) => {
     const logout = async () => {
         const options = {
             method: 'POST',
@@ -19,23 +19,22 @@ export const handleLogout = (setAccountInfo, navigate, setLoggedIn, setUserInfo,
             throw new Error('Response was not ok!')
         } else {
           Cookies.remove('authorization')
-          setAccountInfo(null);
-          setUserInfo(null);
-          setUserPostsList(null);
-          setLoggedIn(false);
           navigate('/login/');
         }
     }
     logout();
 }
 
-export const getLoginInfo = async (setAccountInfo) => {
-      const response = await fetch('/api/v1/accounts/user/')
+export const getUser = async (setLoggedInUserInfo, setAccountInfo, navigate, setLoggedIn, setUserAccountInfo, setUserPostsList, loggedInUserInfo) => {
+    const response = await fetch('/rest-auth/user/');
 
-      if(!response.ok) {
-        throw new Error('Response was not ok!')
-      } else {
-        const data = await response.json()
-        setAccountInfo(data)
-      }
+    if(!response.ok) {
+       
+    handleLogout(setAccountInfo, navigate, setLoggedIn, setUserAccountInfo, setUserPostsList)   
+        
+    //   throw new Error('Response was not ok!');
+    } else {
+      const data = await response.json();
+      setLoggedInUserInfo(data);
+    }
 }

@@ -6,7 +6,7 @@ import './Post.css'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUserPostsList, yourAccForceUpdate, setYourAccForceUpdate}) {
+function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, setUserPostsList, update, setUpdate}) {
 
     const [answer1State, setAnswer1State] = useState(false);
     const [answer2State, setAnswer2State] = useState(false);
@@ -18,7 +18,7 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
     
     const handleAnswer1 = () => {
         for(let i = 0; i < post.answers.length; i++) {
-            if(post.answers[i].profile === accountInfo.id) {
+            if(post.answers[i].profile === loggedInUserInfo.account_id) {
                 if(post.answers[i].user_answer === 'answer1' && post.correct_answer === 'answer1') {
                     return 'correct-answer'
                 } else if(post.answers[i].user_answer === 'answer1' && post.correct_answer === 'answer2') {
@@ -30,7 +30,7 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
 
     const handleAnswer2 = () => {
         for(let i = 0; i < post.answers.length; i++) {
-            if(post.answers[i].profile === accountInfo.id) {
+            if(post.answers[i].profile === loggedInUserInfo.account_id) {
                 if(post.answers[i].user_answer === 'answer2' && post.correct_answer === 'answer2') {
                     return 'correct-answer'
                 } else if(post.answers[i].user_answer === 'answer2' && post.correct_answer === 'answer1') {
@@ -65,10 +65,15 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
             alert('One guess must be selected!')
             return
         }
+
+        if(Number(wager) > loggedInUserInfo.account_points) {
+            alert('Not enough points!')
+            return
+        }
         
         let newAnswer = {
             user_answer: answer1State ? 'answer1' : 'answer2', 
-            profile: accountInfo.id,
+            profile: loggedInUserInfo.account_id,
             post: post.id,
             points_wagered: Number(wager),
         }
@@ -125,17 +130,17 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
                 const data = await response.json();
                 console.log(data);
                 const currentPostIndex = postsList.findIndex(e => e.id === post.id);
-                if(postsList[currentPostIndex].likes.includes(accountInfo.user)) {
+                if(postsList[currentPostIndex].likes.includes(loggedInUserInfo.pk)) {
                     let copyList = postsList;
                     let likeArray = copyList[currentPostIndex].likes;
-                    const newLikeArray = likeArray.filter(user => user !== accountInfo.user)
+                    const newLikeArray = likeArray.filter(user => user !== loggedInUserInfo.pk)
                     copyList[currentPostIndex].likes = newLikeArray;
                     setPostsList(copyList);
                     setForceUpdate(!forceUpdate);
                 } else {
                     let copyList = postsList;
                     let newLikeArray = copyList[currentPostIndex].likes;
-                    newLikeArray.push(accountInfo.user);
+                    newLikeArray.push(loggedInUserInfo.pk);
                     copyList[currentPostIndex].likes = newLikeArray;
                     setPostsList(copyList);
                     setForceUpdate(!forceUpdate);
@@ -148,7 +153,7 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
 
     const handleLikeAndUnlikeButtonHTML = () => {
         const currentPostIndex = postsList.findIndex(e => e.id === post.id);
-        if(postsList[currentPostIndex].likes.includes(accountInfo.user)) {
+        if(postsList[currentPostIndex].likes.includes(loggedInUserInfo.pk)) {
             return <button type="button" onClick={handleLikeClick}>Unlike</button>
         } else {
             return <button type="button" onClick={handleLikeClick}>Like</button>
@@ -157,7 +162,7 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
 
     const handleNameClick = () => {
         console.log('iran')
-        if(accountInfo.user !== post.user){
+        if(loggedInUserInfo.pk !== post.user){
             navigate(`/${post.user}/view/`)
         } else {
             navigate('/current-user-account-view/')
@@ -181,11 +186,11 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
                 const postIndex = copyList.findIndex(p => p.id === post.id);
                 copyList.splice(postIndex, 1);
                 setUserPostsList(copyList);
-                setShow(false);
-                setYourAccForceUpdate(!yourAccForceUpdate);
+                setUpdate(!update);
             }
         }
         deletePost();
+        setShow(false);
     }
 
     const postGuessHTML = (
@@ -207,7 +212,7 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
                 </div>
             </Modal>
             <div>
-                {post.user === accountInfo.user ? <button type="button" onClick={() => setShow(true)}>Delete</button> : null}
+                {post.user === loggedInUserInfo.pk ? <button type="button" onClick={() => setShow(true)}>Delete</button> : null}
             </div>
             <h1 onClick={handleNameClick}>{post.account_alias}</h1>
             <h2>{post.username}</h2>
@@ -218,7 +223,7 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
             </div>
             <div>
                 <p>{`${post.likes.length} Likes`}</p>
-                {post.user !== accountInfo.user ? handleLikeAndUnlikeButtonHTML() : null}
+                {post.user !== loggedInUserInfo.pk ? handleLikeAndUnlikeButtonHTML() : null}
             </div>
             <div>
                 {post.phase === 'SB' && <button type="type" onClick={() => navigate(`/edit-post/${post.id}`)}>Edit</button>}
@@ -263,14 +268,14 @@ function Post({post, accountInfo, setPostsList, postsList, userPostsList, setUse
         </div>
     )
 
-    if (post.user === accountInfo.user) {
+    if (post.user === loggedInUserInfo.pk) {
         return postGuessHTML
     }
 
     if(post.answers !== []) {
         let answered = false;
         for(let i = 0; i < post.answers.length; i++) {
-            if(post.answers[i].profile === accountInfo.id) {
+            if(post.answers[i].profile === loggedInUserInfo.account_id) {
                 answered = true
             }
         }

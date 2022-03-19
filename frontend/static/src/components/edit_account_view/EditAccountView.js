@@ -62,6 +62,8 @@ function EditAccountView({accountInfo, setAccountInfo}) {
             editObject.append('profile_img', picture);
         }
 
+        editObject.append('active', true);
+
 
         const editAccount = async () => {
             const options = {

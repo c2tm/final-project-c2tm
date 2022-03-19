@@ -1,7 +1,25 @@
+import { useEffect, useState } from "react"
 import AdminPost from "./AdminPost"
 import './AdminView.css'
 
-function AdminView({submittedPostList, setSubmittedPostList}) {
+function AdminView({}) {
+
+    const [submittedPostList, setSubmittedPostList] = useState(null)
+
+    useEffect(() => {
+        const getSubmittedPosts = async () => { 
+            const response = await fetch('/api/v1/posts/admin/')
+          
+            if(!response.ok) {
+                throw new Error('Response was not ok!')
+            } else {
+                const data = await response.json()
+                setSubmittedPostList(data)
+            }
+          
+        }
+        getSubmittedPosts()
+    })
 
     if(!submittedPostList) {
         return (
