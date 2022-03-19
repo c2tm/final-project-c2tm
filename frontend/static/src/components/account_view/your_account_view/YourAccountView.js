@@ -21,7 +21,7 @@ function YourAccountView({accountInfo, setAccountInfo, setPostsList, userPostsLi
                 } else {
                     const data = await response.json();
                     let copyList = data
-                        copyList.sort((a, b) => {
+                    copyList.sort((a, b) => {
                         return b.id - a.id;
                     })
                     setUserPostsList(copyList);

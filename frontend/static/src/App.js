@@ -13,6 +13,7 @@ import NormalAccountView from "./components/account_view/normal_account_view/Nor
 import PostCreate from "./components/posts/PostCreate";
 import PostEdit from "./components/posts/PostEdit";
 import AdminView from "./components/admin_view/AdminView";
+import Leaderboard from "./components/leaderboards/Leaderboards";
 
 
 function App() {
@@ -54,7 +55,7 @@ function App() {
 
   const displaySidebar = () => {
     
-    if (location.pathname === '/' || location.pathname === '/current-user-account-view/' || location.pathname.includes('view') || location.pathname === '/admin/') {
+    if (location.pathname === '/' || location.pathname === '/current-user-account-view/' || location.pathname.includes('view') || location.pathname === '/admin/' || location.pathname === '/leaderboards/') {
       return true
     } else {
       return false
@@ -68,6 +69,7 @@ function App() {
             <button type="button" onClick={() => navigate('/current-user-account-view/')}>View Profile</button>
             <button type="button" onClick={() => navigate('/create-post/')}>Create Post</button>
             {loggedInUserInfo && (loggedInUserInfo.is_superuser && <button type="button" onClick={() => navigate('/admin/')}>Admin View</button>)}
+            <button type="button" onClick={() => navigate('/leaderboards/')}>Leaderboards</button>
             <div>{loggedInUserInfo && loggedInUserInfo.account_points}</div>
       </div>
   )
@@ -91,6 +93,7 @@ function App() {
         <Route path='create-post' element={<PostCreate setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
         <Route path='edit-post/:postId' element={<PostEdit setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
         <Route path="admin" element={<AdminView postsList={postsList} setPostsList={setPostsList}/>}/>
+        <Route path='leaderboards' element={<Leaderboard />}/>
       </Routes>
 
     </div>
