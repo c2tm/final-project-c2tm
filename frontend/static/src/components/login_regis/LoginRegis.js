@@ -39,6 +39,7 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
     const createAccount = async () => {
         const newAccount = new FormData()
         newAccount.append('alias', regis.username)
+        newAccount.append('active', true)
         const options = {
             method: 'POST',
             headers: {
@@ -150,48 +151,53 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
       };
 
     const loginHTML = (
-        <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
+        <Form onSubmit={handleSubmit} className='login-form'>
+                <Form.Group className="group mb-3">
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text" name="username" placeholder="JohnnyAppleseed1" value={login.username} onChange={handleLoginChange}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" name="password" placeholder='password123' value={login.password} onChange={handleLoginChange}/>
                 </Form.Group>
-                <Button variant="primary" type="submit">
-                    Login
-                </Button>
-                <Button type="button" onClick={handleClick}>
-                    Register
-                </Button>
+                <div className='button-group'>
+                    <Button className='custom-button' type="submit">
+                        Login
+                    </Button>
+                    <Button className='custom-button' type="button" onClick={handleClick}>
+                        Register
+                    </Button>
+                </div>   
         </Form>
     )
 
     const regisHTML = (
-        <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
+        <Form className='regis-form' onSubmit={handleSubmit}>
+                <Form.Group className="group mb-3">
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text" name="username" placeholder="JohnnyAppleseed1" value={regis.username} onChange={handleRegisChange}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" name="email" placeholder="email@example.com" value={regis.email} onChange={handleRegisChange}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" name="password1" placeholder='password123' value={regis.password1} onChange={handleRegisChange}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" name="password2" placeholder='password123' value={regis.password2} onChange={handleRegisChange}/>
                 </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-                <Button type="button" onClick={handleClick}>
-                    Back
-                </Button>
+                <div className='button-group'>
+                    <Button className='custom-button' type="submit">
+                        Submit
+                    </Button>
+                    <Button type="button" className='custom-button' onClick={handleClick}>
+                        Back
+                    </Button>
+                </div>
+                
         </Form>
     )
     return (

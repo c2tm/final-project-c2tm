@@ -3,9 +3,41 @@
   justify-content: center;
   width: 100vw;
   height: 100vh;
+  background: var(--purple-gradient);
 }
 
 .create-form-container {
   width: 30%;
   margin: 2rem 0 0 0;
+}
+
+.correct-answer-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.create-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 24px 16px 24px;
+  background: rgb(46, 46, 46);
+  border-radius: 20px;
+  margin: 9rem 0 0 0;
+}
+
+.create-form > div > input {
+  width: 28rem;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  width: 9rem;
+}
+
+.form-check-input:checked {
+  background-color: rgb(211, 0, 211);
+  border-color: rgb(211, 0, 211);
 }

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { handleErrors, handleLogout } from "../../utitlties/Utility";
+import './AccountDeletion.css'
 
 function AccountDeletion({setAccountInfo}) {
 
@@ -21,11 +22,13 @@ function AccountDeletion({setAccountInfo}) {
     }
 
     return (
-        <div>
-            <h1>Are you sure you want to deactivate your account?</h1>
+        <div className="account-deletion-view">
             <div>
-                <button type="button" onClick={handleDeactivateClick}>Yes</button>
-                <button type="button" onClick={() => navigate('/account-view/')}>No</button>
+                <h1>Are you sure you want to deactivate your account?</h1>
+                <div>
+                    <button type="button" className="deactivate-button" onClick={handleDeactivateClick}>Yes</button>
+                    <button type="button" className="deactivate-button" onClick={() => navigate('/current-user-account-view/')}>No</button>
+                </div>
             </div>
         </div>
     )

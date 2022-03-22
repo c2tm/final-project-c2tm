@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { getLoginInfo, handleErrors } from "../../../utitlties/Utility"
 import Post from "../../posts/Post"
 import './NormalAccountView.css'
+import '.././account.css'
 import Overlay from 'react-bootstrap/Overlay'
 
 function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserInfo}) {
@@ -41,7 +42,7 @@ function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserIn
             }
             getUserInfo();
         }
-        
+
     },[])
 
     useEffect(() => {
@@ -62,7 +63,7 @@ function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserIn
 
    if(!userAccountInfo) {
        return (
-           <div>
+           <div className="account-view">
                <h1>Loading Account Info...</h1>
            </div>
        )
@@ -103,14 +104,14 @@ function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserIn
 
     const accountHTML = (
         <div className="account">
-            <div>
+            <div className="img-container">
                 <img src={userAccountInfo.profile_img} alt="profile-picture"/>
             </div>
-            <h1>{userAccountInfo.alias}</h1>
-            <h2>{userAccountInfo.username}</h2>
-            <p>{userAccountInfo.bio}</p>
-            <button type="button" onClick={handleAddFlag}>Report</button>
-
+            <div className="account-info-container">
+                <h1>{userAccountInfo.alias}</h1>
+                <p>{userAccountInfo.bio}</p>
+                <button type="button" className='report-button' onClick={handleAddFlag}>Report</button>
+            </div>
         </div>
     )
 
@@ -122,6 +123,14 @@ function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserIn
         postHTML = postsList.filter(post => post.user==params.accountId).map(post => (
             <Post post={post} loggedInUserInfo={loggedInUserInfo} postsList={postsList} setPostsList={setPostsList} key={post.id}/>
         ))
+    }
+
+    if(postsList && postsList.filter(post => post.user == params.accountId).length === 0) {
+        postHTML = (
+            <div className="no-posts-div">
+                <h1>No posts yet...</h1>
+            </div>
+        )
     }
 
     return (

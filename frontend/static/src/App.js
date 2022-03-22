@@ -47,11 +47,11 @@ function App() {
   
   useEffect(() => {
 
-    if(loggedInUserInfo && !loggedInUserInfo.account_active) {
+    if((loggedInUserInfo && !loggedInUserInfo.account_active) || (accountInfo && !accountInfo.active)) {
       navigate('/account-reactivation/')
     }
 
-  }, [loggedInUserInfo])
+  }, [loggedInUserInfo, accountInfo])
 
   const displaySidebar = () => {
     
@@ -64,13 +64,16 @@ function App() {
 
   const sidebarHTML = (
       <div className="sidebar">
-            {location.pathname !== '/' && <button onClick={() => navigate('/')}>Home</button>}
-            <button type="button" onClick={() => handleLogout(navigate, setUserPostsList)}>Logout</button>
-            <button type="button" onClick={() => navigate('/current-user-account-view/')}>View Profile</button>
-            <button type="button" onClick={() => navigate('/create-post/')}>Create Post</button>
-            {loggedInUserInfo && (loggedInUserInfo.is_superuser && <button type="button" onClick={() => navigate('/admin/')}>Admin View</button>)}
-            <button type="button" onClick={() => navigate('/leaderboards/')}>Leaderboards</button>
-            <div>{loggedInUserInfo && loggedInUserInfo.account_points}</div>
+          <div className="points">{(loggedInUserInfo && loggedInUserInfo.account_points) || (accountInfo && accountInfo.points)}</div>
+          <div className="sidebar-button-group">
+              {location.pathname !== '/' && <button onClick={() => navigate('/')}>Home</button>}
+              <button type="button" onClick={() => navigate('/current-user-account-view/')}>View Profile</button>
+              <button type="button" onClick={() => navigate('/leaderboards/')}>Leaderboards</button>
+              <button type="button" onClick={() => navigate('/create-post/')}>Create Post</button>
+              {loggedInUserInfo && (loggedInUserInfo.is_superuser && <button type="button" onClick={() => navigate('/admin/')}>Admin View</button>)}
+              <button type="button" onClick={() => handleLogout(navigate, setUserPostsList)}>Logout</button>
+          </div>
+            
       </div>
   )
 
@@ -84,15 +87,15 @@ function App() {
       {displaySidebar() && sidebarHTML}
       <Routes>
         <Route path='/' element={<HomePage postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
-        <Route path='login' element={<LoginRegis setLoggedInUserInfo={setLoggedInUserInfo}/>}/>
+        <Route path='login' element={<LoginRegis setLoggedInUserInfo={setLoggedInUserInfo} setAccountInfo={setAccountInfo} />}/>
         <Route path='current-user-account-view' element={<YourAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPostsList={setPostsList} userPostsList={userPostsList} setUserPostsList={setUserPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
-        <Route path=':accountId/view' element={<NormalAccountView postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
+        <Route path=':accountId/view' element={<NormalAccountView postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo} accountInfo={accountInfo}/>}/>
         <Route path='edit' element={<EditAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}/>
         <Route path='delete-account' element={<AccountDeletion />}/> 
-        <Route path='account-reactivation' element={<AccountReactivation setAccountInfo={setAccountInfo}/>}/>
+        <Route path='account-reactivation' element={<AccountReactivation setAccountInfo={setAccountInfo} loggedInUserInfo={loggedInUserInfo}/>}/>
         <Route path='create-post' element={<PostCreate setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
         <Route path='edit-post/:postId' element={<PostEdit setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
-        <Route path="admin" element={<AdminView postsList={postsList} setPostsList={setPostsList}/>}/>
+        <Route path="admin" element={<AdminView postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
         <Route path='leaderboards' element={<Leaderboard />}/>
       </Routes>
 

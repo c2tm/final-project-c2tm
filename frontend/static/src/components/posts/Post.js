@@ -154,9 +154,9 @@ function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, s
     const handleLikeAndUnlikeButtonHTML = () => {
         const currentPostIndex = postsList.findIndex(e => e.id === post.id);
         if(postsList[currentPostIndex].likes.includes(loggedInUserInfo.pk)) {
-            return <button type="button" onClick={handleLikeClick}>Unlike</button>
+            return <button type="button" className='like-button unliked' onClick={handleLikeClick}>{post.likes.length} <span>&#9829;</span></button>
         } else {
-            return <button type="button" onClick={handleLikeClick}>Like</button>
+            return <button type="button" className='like-button liked' onClick={handleLikeClick}>{post.likes.length} <span>&#9825;</span></button>
         }
     }
 
@@ -206,37 +206,28 @@ function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, s
             <Modal show={show} onHide={() => setShow(false)} centered>
                 <div>
                     <div>
-                        <button type='button' onClick={() => setShow(false)}>X</button>
-                        <h1>Are you sure you want to delete this post?</h1>
+                        <h1 className="modal-h1">Are you sure you want to delete this post?</h1>
                     </div>              
                     <div className="modal-buttons">
-                        <Button variant="secondary" onClick={() => setShow(false)}>
+                        <Button className="custom-button" onClick={() => setShow(false)}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={handleDelete}>
+                        <Button className="custom-button delete" onClick={handleDelete}>
                             Delete
                         </Button>
                     </div>
                 </div>
             </Modal>
-            <div>
-                {post.user === loggedInUserInfo.pk ? <button type="button" onClick={() => setShow(true)}>Delete</button> : null}
-            </div>
             <h1 onClick={handleNameClick}>{post.account_alias}</h1>
-            <h2>{post.username}</h2>
             <div className="video">
                 <video controls>
                     <source src={post.video} type='video/mp4'/>               
                 </video>
             </div>
+            <div className="likes-container">
+                {post.user !== loggedInUserInfo.pk ? handleLikeAndUnlikeButtonHTML() : <p className="like-amount">{post.likes.length} <span>&#9829;</span></p>}
+            </div>
             {(post.phase === 'SB' || post.phase === 'RJ') && translatePhase(post)}
-            <div>
-                <p>{`${post.likes.length} Likes`}</p>
-                {post.user !== loggedInUserInfo.pk ? handleLikeAndUnlikeButtonHTML() : null}
-            </div>
-            <div>
-                {post.phase === 'SB' && <button type="type" onClick={() => navigate(`/edit-post/${post.id}`)}>Edit</button>}
-            </div>
             <h3>{post.question}</h3>
             <div className="post-answers">
                 <div className={`answer-post-guess ${handleAnswer1()}`}>
@@ -246,19 +237,26 @@ function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, s
                     <p>{post.answer2}</p>
                 </div>   
             </div>
+            <div>
+                
+            </div>
+            <div className="edit-delete-button-group">
+                {post.phase === 'SB' && <button type="type" className='delete-button' onClick={() => navigate(`/edit-post/${post.id}`)}>Edit</button>}
+                {post.user === loggedInUserInfo.pk ? <button type="button" className='delete-button' onClick={() => setShow(true)}>Delete</button> : null}
+            </div>
         </div>
     )
 
     const preGuessHTML = (
         <div className="post" >
             <h1 onClick={handleNameClick}>{post.account_alias}</h1>
-            <h2>{post.username}</h2>
             <div className="thumbnail">
                 <img src={post.thumbnail} alt='video-thumbnail'/>
             </div>
-            
-            <p>{`${post.likes.length} Likes`}</p>
-            <h3>{post.question}</h3>
+            {/* <div className="likes-container">
+                <p>{`${post.likes.length} Likes`}</p>
+            </div> */}
+            <h3 className="preguess-question">{post.question}</h3>
             <form className="post-answers-form" onSubmit={handleAnswerSubmit}>
                 <div className="post-answers">
                     <button type='button' name='1' className={`answer ${answer1State ? 'selected-answer' : null}`} onClick={handleAnswer1Click}>

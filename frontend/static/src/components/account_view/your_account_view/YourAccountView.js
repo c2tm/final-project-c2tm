@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { getLoginInfo, handleErrors } from "../../../utitlties/Utility"
 import Post from "../../posts/Post"
 import './YourAccountView.css'
+import '.././account.css'
 
 function YourAccountView({accountInfo, setAccountInfo, setPostsList, userPostsList, setUserPostsList, loggedInUserInfo}) {
 
@@ -60,7 +61,7 @@ function YourAccountView({accountInfo, setAccountInfo, setPostsList, userPostsLi
    if(accountInfo.active === false) {
        console.log(accountInfo);
        return (
-           <div>
+           <div className="account-view">
                <h1>Account is no longer active.</h1>
            </div>
        )
@@ -68,13 +69,14 @@ function YourAccountView({accountInfo, setAccountInfo, setPostsList, userPostsLi
 
     const accountHTML = (
         <div className="account">
-            <div>
+            <div className="img-container">
                 <img src={accountInfo.profile_img} alt="profile-picture"/>
             </div>
-            <h1>{accountInfo.alias}</h1>
-            <h2>{accountInfo.username}</h2>
-            <p>{accountInfo.bio}</p>
-            <button type="button" onClick={() => handleEditClick()}>Edit Account</button>
+            <div className="account-info-container">
+                <h1>{accountInfo.alias}</h1>
+                <p>{accountInfo.bio}</p>
+                <button type="button" className='edit-account-button' onClick={() => handleEditClick()}>Edit</button>
+            </div>
         </div>
     )
 

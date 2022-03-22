@@ -1,3 +1,27 @@
+:root {
+  --accent-color: #56b6c4;
+  --purple-gradient: linear-gradient(
+    90deg,
+    rgba(206, 0, 254, 1) 0%,
+    rgba(180, 0, 168, 1) 50%,
+    rgba(139, 0, 147, 1) 100%
+  );
+  --purple-bg-color: rgb(206, 0, 254);
+  --gray-bg-color: rgb(68, 68, 68);
+  --gray-gradient: linear-gradient(
+    120deg,
+    rgb(29, 29, 29) 0%,
+    rgb(29, 29, 29) 50%,
+    rgb(19, 19, 19) 100%
+  );
+  --blue-gradient: linear-gradient(
+    90deg,
+    rgba(0, 225, 254, 1) 0%,
+    rgba(0, 162, 180, 1) 50%,
+    rgba(0, 125, 147, 1) 100%
+  );
+}
+
 .App {
   display: flex;
   width: 100vw;
@@ -5,7 +29,58 @@
 }
 
 .sidebar {
-  background-color: rgb(22, 22, 22);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--gray-bg-color);
+  background: var(--gray-gradient);
   width: 30rem;
   height: 100vh;
+  border-radius: 10px;
+  border-right: 4px var(--accent-color) solid;
+}
+
+.sidebar > .points {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0 0 0;
+  background-color: rgb(20, 20, 20);
+  width: 6rem;
+  height: 2rem;
+  border-radius: 7px;
+  border-bottom: 2px var(--accent-color) solid;
+  border-top: 2px rgb(224, 5, 224) solid;
+  box-shadow: 1px 1px 5px rgb(22, 22, 22, 0.7);
+}
+
+.sidebar > .sidebar-button-group {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0 0 0;
+}
+
+.sidebar > div > button {
+  margin: 2rem 0 0 0;
+  border: none;
+  padding: 0;
+  height: 3rem;
+  border-radius: 5px;
+  border-bottom: 2px var(--accent-color) solid;
+  background: var(--purple-bg-color);
+  background: var(--purple-gradient);
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+  width: 20rem;
+  box-shadow: 2px 2px 5px rgb(22, 22, 22, 0.7);
+}
+
+.sidebar > div > button:hover {
+  cursor: pointer;
+  height: 4rem;
+  transition: all 0.2s ease-in-out;
+  background: rgb(0, 225, 254);
+  background: var(--blue-gradient);
+  border-bottom: 2px var(--purple-bg-color) solid;
 }

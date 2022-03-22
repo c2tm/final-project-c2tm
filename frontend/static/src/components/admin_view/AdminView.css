@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@500&display=swap");
+
 .admin-view-container {
   display: flex;
   flex-direction: column;
@@ -13,7 +15,7 @@
   background-color: rgb(22, 22, 22);
 }
 
-.post {
+.admin-view-post {
   display: flex;
   flex-direction: column;
   background-color: rgb(22, 22, 22);
@@ -21,7 +23,7 @@
   padding: 16px 24px 16px 24px;
 }
 
-.post-answers {
+.admin-view-post-answers {
   display: flex;
   width: 100%;
 }
@@ -32,44 +34,96 @@
   align-items: center;
 }
 
-.answer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  height: 3rem;
-  background: none;
-  color: white;
-  border: none;
-  padding: 0;
-}
-
 .answer > p {
   margin-bottom: 0;
 }
 
-.answer-post-guess {
+.admin-answer-post-guess {
   width: 50%;
 }
 
-.video {
+.admin-video {
   width: 30%;
 }
 
-.video > video {
+.admin-video > video {
   height: 576px;
   width: 1024px;
 }
 
 .admin-view-account {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  width: 60rem;
   align-items: center;
   background-color: rgb(22, 22, 22);
   padding: 16px 24px 16px 24px;
   margin: 2rem 0 0 0;
+  border-radius: 20px;
+  border-bottom: 2px rgb(187, 0, 187) solid;
+}
+
+.admin-view-account > h1 {
+  cursor: pointer;
+}
+
+.admin-view-account > button {
+  border: none;
+  background: var(--accent-color);
+  color: white;
 }
 
 .switch {
   margin: 2rem 0 0 0;
+}
+
+#custom-switch:checked {
+  background-color: rgb(187, 0, 187);
+  border: none;
+}
+
+.form-check-input:focus {
+  box-shadow: none;
+}
+
+.custom-dropdown > button {
+  margin: 2rem 0 0 0;
+  background: var(--purple-gradient);
+  border: none;
+}
+
+.admin-post-submit-button {
+  margin: 1rem 0 0 0;
+  border: none;
+  background: var(--accent-color);
+  color: white;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.points-button {
+  margin: 2rem 0 0 0;
+  background: var(--accent-color);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.modal-content {
+  font-family: "Syne", sans-serif;
+  margin: 0 0 7rem 0;
+}
+
+.modal-header {
+  color: white;
+}
+
+.modal-body {
+  color: white;
 }

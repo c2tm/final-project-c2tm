@@ -1,9 +1,16 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleErrors, handleLogout } from "../../utitlties/Utility"
 
-function AccountReactivation({setAccountInfo}) {
+function AccountReactivation({setAccountInfo, accountInfo, loggedInUserInfo}) {
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if((loggedInUserInfo && !loggedInUserInfo.account_active) || (accountInfo && !accountInfo.active)) {
+            navigate('/')
+        }
+    },[loggedInUserInfo, accountInfo])
 
     const handleActivateClick = () => {
         const reactivate = async () => {

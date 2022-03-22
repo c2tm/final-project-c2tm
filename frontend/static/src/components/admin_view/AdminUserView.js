@@ -3,10 +3,14 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Cookies from 'js-cookie';
 import { handleErrors } from '../../utitlties/Utility';
+import { useNavigate } from 'react-router-dom';
+import CloseButton from 'react-bootstrap/CloseButton'
 
-function AdminUserView({account, flaggedAccounts, setFlaggedAccounts, update, setUpdate}) {
+
+function AdminUserView({account, flaggedAccounts, setFlaggedAccounts, update, setUpdate, loggedInUserInfo}) {
 
     const [show, setShow] = useState(false);
+    const navigate = useNavigate();
 
     const handleClose = () => setShow(false);
 
@@ -72,22 +76,32 @@ function AdminUserView({account, flaggedAccounts, setFlaggedAccounts, update, se
         setUpdate(!update);
     }
 
+    const handleNameClick = () => {
+        console.log('iran')
+        if(loggedInUserInfo.pk !== account.user){
+            navigate(`/${account.user}/view/`)
+        } else {
+            navigate('/current-user-account-view/')
+        }
+    }
+
     return (
 
         <div>
             <Modal show={show} onHide={handleClose} centered>
-                <Modal.Header closeButton>
+                <Modal.Header>
                 <Modal.Title>Options</Modal.Title>
+                <CloseButton variant="white" onClick={() => setShow(!show)}/>
                 </Modal.Header>
                 <Modal.Body>What would you like to do to {account.alias}'s account?</Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" className='custom-button' onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button variant="secondary" onClick={handleBanAccount}>
+                <Button variant="secondary" className='custom-button' onClick={handleBanAccount}>
                     Ban Account
                 </Button>
-                <Button variant="primary" onClick={handleRemoveFlag}>
+                <Button variant="primary" className='custom-button' onClick={handleRemoveFlag}>
                     Remove Flag
                 </Button>
                 </Modal.Footer>
@@ -95,16 +109,12 @@ function AdminUserView({account, flaggedAccounts, setFlaggedAccounts, update, se
 
             <div className="admin-view-account">
            
-                <div>
+                <div className='img-container'>
                     <img src={account.profile_img} alt="profile image"/>
                 </div>
-                <h1>{account.alias}</h1>
-                <h2>{account.username}</h2>
-                <p>{account.bio}</p>
-                <div className="points">
-                    <h3>{account.points}</h3>
-                    <h4>{account.alltime_points}</h4>
-                </div>
+                <h1 onClick={handleNameClick}>{account.alias}</h1>
+                <h3>{account.points}</h3>
+                <h4>{account.alltime_points}</h4>
                 <button onClick={handleOptionsClick}>Options</button>
             
             </div>

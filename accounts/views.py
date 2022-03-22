@@ -1,5 +1,6 @@
+from operator import attrgetter
 from django.shortcuts import get_object_or_404, render
-from rest_framework import generics, views, authentication, response
+from rest_framework import generics, views, authentication, response, filters
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .serializers import AccountSerializer
@@ -13,6 +14,26 @@ import json
 class AccountListAPIView(generics.ListCreateAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class AccountsByPointListAPIView(generics.ListCreateAPIView):
+    serializer_class = AccountSerializer
+
+    def get_queryset(self):
+        return Account.objects.order_by('-points')[:10]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class AccountsByAllTimePointListAPIView(generics.ListCreateAPIView):
+    serializer_class = AccountSerializer
+
+    def get_queryset(self):
+        return Account.objects.order_by('-alltime_points')[:10]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -118,3 +139,15 @@ def FlagUser(request):
     account.save()
     serializer = AccountSerializer(account)
     return response.Response(serializer.data)
+
+
+@api_view(('GET',))
+def GivePoints(request):
+    accounts = Account.objects.all()
+
+    for account in accounts:
+        account.points = account.points + 1000
+        account.alltime_points = account.alltime_points + 1000
+        account.save()
+
+    return response.Response({'message': 'added 1000 points to all accounts!'})

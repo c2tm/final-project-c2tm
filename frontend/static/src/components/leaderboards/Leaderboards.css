@@ -1,8 +1,95 @@
-.leaderboards-container {
+.leaderboards-view-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   height: 100vh;
   width: 100%;
   overflow-y: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.leaderboards-container {
+  display: flex;
+  justify-content: space-evenly;
+  height: 47rem;
+  width: 80%;
+  margin: 2rem 0 0 0;
+  align-items: stretch;
+  background-color: rgb(22, 22, 22);
+  border-radius: 20px;
+  padding: 16px 20px 16px 20px;
+  margin-bottom: 9rem;
+  border-bottom: 2px var(--accent-color) solid;
+}
+
+.points-leaderboard {
+  display: flex;
+  flex-direction: column;
+}
+
+.points-leaderboard > * {
+  font-size: 25px;
+}
+
+.points-leaderboard > div > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.points-leaderboard > div > div > h1 {
+  cursor: pointer;
+  color: rgb(228, 0, 228);
+  font-size: 25px;
+}
+
+.points-leaderboard > div > div > h1:hover {
+  transition: 0.2s;
+  color: var(--accent-color);
+  font-size: 27px;
+}
+
+.points-leaderboard > div > div > h2 {
+  font-size: 18px;
+}
+
+.alltime-points-leaderboard > * {
+  font-size: 25px;
+}
+
+.alltime-points-leaderboard > div > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.alltime-points-leaderboard > div > div > h1 {
+  cursor: pointer;
+  color: rgb(228, 0, 228);
+  font-size: 25px;
+}
+
+.alltime-points-leaderboard > div > div > h1:hover {
+  transition: 0.2s;
+  color: var(--accent-color);
+  font-size: 27px;
+}
+
+.alltime-points-leaderboard > div > div > h2 {
+  font-size: 18px;
+}
+
+.divider-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 47rem;
+}
+
+.divider {
+  height: 25rem;
+  width: 0.3rem;
+  background: var(--accent-color);
 }

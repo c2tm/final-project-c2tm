@@ -4,7 +4,7 @@ import './AdminView.css'
 import Form from 'react-bootstrap/Form/'
 import AdminUserView from "./AdminUserView"
 
-function AdminView({setPostsList, postsList}) {
+function AdminView({setPostsList, postsList, loggedInUserInfo}) {
 
     const [submittedPostList, setSubmittedPostList] = useState(null)
     const [flaggedAccounts, setFlaggedAccounts] = useState(null);
@@ -48,7 +48,9 @@ function AdminView({setPostsList, postsList}) {
 
     if(!submittedPostList || !flaggedAccounts) {
         return (
-            <div>Loading</div>
+            <div className="admin-view-container">
+                <h1>Loading...</h1>
+            </div>
         )
     }
 
@@ -66,18 +68,32 @@ function AdminView({setPostsList, postsList}) {
         return false
     }
 
+    const handleGivePoints = () => {
+        const givePoints = async () => {
+            const response = await fetch('/api/v1/accounts/give-points/')
+
+            if(!response.ok) {
+                throw new Error('Response was not ok!')
+            } else {
+                const data = await response.json();
+                console.log(data);
+            }
+        }
+        givePoints();
+    }
+
     let postHTML;
     let userAccountsHTML;
 
     if(submittedPostList) {
         postHTML = submittedPostList.map(post => (
-            <AdminPost post={post} submittedPostList={submittedPostList} setSubmittedPostList={setSubmittedPostList} postsList={postsList} setPostsList={setPostsList} update={update} setUpdate={setUpdate} key={post.id}/>
+            <AdminPost post={post} loggedInUserInfo={loggedInUserInfo} submittedPostList={submittedPostList} setSubmittedPostList={setSubmittedPostList} postsList={postsList} setPostsList={setPostsList} update={update} setUpdate={setUpdate} key={post.id}/>
         ))
     }
 
     if(flaggedAccounts) {
         userAccountsHTML = flaggedAccounts.map(account => (
-            <AdminUserView account={account} flaggedAccounts={flaggedAccounts} setFlaggedAccounts={setFlaggedAccounts} update={update} setUpdate={setUpdate} key={account.id}/>
+            <AdminUserView account={account} loggedInUserInfo={loggedInUserInfo} flaggedAccounts={flaggedAccounts} setFlaggedAccounts={setFlaggedAccounts} update={update} setUpdate={setUpdate} key={account.id}/>
         ))
     }
 
@@ -109,6 +125,7 @@ function AdminView({setPostsList, postsList}) {
 
     return (
         <div className="admin-view-container">
+            <button className="points-button" onClick={handleGivePoints}>+1000 Points</button>
             <Form.Check 
                 type="switch"
                 id="custom-switch"

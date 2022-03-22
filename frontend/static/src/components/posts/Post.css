@@ -1,13 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@500&display=swap");
+
 .post {
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: rgb(22, 22, 22);
   margin: 2rem 0 0 0;
   padding: 16px 24px 16px 24px;
+  border-radius: 20px;
+}
+
+.post > .preguess-question {
+  margin: 1rem 0 1rem 0;
 }
 
 .post-answers {
   display: flex;
+  justify-content: space-around;
   width: 100%;
 }
 
@@ -15,10 +24,26 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+}
+
+.post-answers-form > label {
+  margin: 1rem 0 0 0;
+}
+
+.post-answers-form > input {
+  margin: 1rem 0 0 0;
+  text-indent: 0.5rem;
+  border-radius: 5px;
+  border: none;
+  border-bottom: 2px var(--accent-color) solid;
+  color: whitesmoke;
+  background: rgb(14, 14, 14);
 }
 
 .thumbnail {
-  width: 30%;
+  width: 100%;
+  height: auto;
 }
 
 .thumbnail > img {
@@ -30,12 +55,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 49%;
   height: 3rem;
-  background: none;
+  background: var(--purple-gradient);
   color: white;
   border: none;
   padding: 0;
+  border-radius: 10px;
 }
 
 .answer > p {
@@ -43,21 +69,42 @@
 }
 
 .answer:hover {
-  background-color: purple;
   transition: 0.2s;
   cursor: pointer;
+  width: 50%;
 }
 
 .answer-post-guess {
-  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 47%;
+  height: 3rem;
+  background: var(--purple-gradient);
+  color: white;
+  border: none;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.answer-post-guess > p {
+  margin-bottom: 0px;
 }
 
 .answer-submit-button {
   margin: 1rem 0 0 0;
+  border: none;
+  width: 5rem;
+  background: var(--accent-color);
+  color: white;
+}
+
+.answer-submit-button:hover {
+  background: rgb(194, 0, 194);
 }
 
 .correct-answer {
-  border: 2px solid green;
+  border: 3px solid green;
 }
 
 .incorrect-answer {
@@ -65,11 +112,11 @@
 }
 
 .selected-answer {
-  background-color: rgb(168, 3, 168) !important;
+  background: var(--blue-gradient);
 }
 
 .video {
-  width: 30%;
+  width: 100%;
 }
 
 .video > video {
@@ -79,4 +126,72 @@
 
 .post > h1:hover {
   cursor: pointer;
+}
+
+.likes-container {
+  width: 100%;
+}
+
+.like-button {
+  background: none;
+  border: none;
+  color: white;
+}
+
+.like-button > span {
+  font-size: 24px;
+  color: rgb(225, 0, 255);
+}
+
+.like-amount > span {
+  font-size: 24px;
+  color: rgb(225, 0, 255);
+}
+
+.delete-button {
+  margin: 1rem 0 0 0;
+  border: none;
+  background: rgb(168, 2, 168);
+  color: white;
+  width: 3.2rem;
+  font-size: 12px;
+}
+
+.delete-button:hover {
+  cursor: pointer;
+}
+
+.modal {
+  margin: 0 0 0 11rem;
+}
+
+.modal-content {
+  background-color: rgb(22, 22, 22);
+  padding: 16px 24px 16px 24px;
+  border-bottom: 4px var(--accent-color) solid;
+  border-radius: 5px;
+}
+
+.modal-h1 {
+  color: white;
+  font-family: "Syne", sans-serif;
+  font-size: 22px;
+  margin: 1rem 0 1rem 0;
+}
+.modal-buttons {
+  margin: 0 0 1rem 0;
+}
+
+.delete {
+  margin: 0 0 0 1rem;
+}
+
+.post > h1:hover {
+  color: rgb(223, 4, 223);
+}
+
+.edit-delete-button-group {
+  display: flex;
+  justify-content: space-around;
+  width: 10rem;
 }

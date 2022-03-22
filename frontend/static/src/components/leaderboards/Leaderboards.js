@@ -6,49 +6,72 @@ import AllTimeUser from './AllTimeUser'
 
 function Leaderboard() {
 
-    const [userList, setUserList] = useState(null)
+    const [userListByPoints, setUserListByPoints] = useState(null)
+    const [userListByAllTimePoints, setUserListByAllTimePoints] = useState(null)
 
     useEffect(() => {
-        if(!userList) {
-            const getUsers = async () => {
-                const response = await fetch('/api/v1/accounts/').catch(handleErrors);
+        if(!userListByPoints) {
+            const getUsersByPoints = async () => {
+                const response = await fetch('/api/v1/accounts/accounts-by-points/').catch(handleErrors);
 
                 if(!response.ok) {
                     throw new Error('Response was not ok!')
                 } else {
                     const data = await response.json()
-                    setUserList(data);
+                    setUserListByPoints(data);
                 }
             }
-            getUsers()
+            getUsersByPoints()
+        }
+
+        if(!userListByAllTimePoints) {
+            const getUsersByAllTimePoints = async () => {
+                const response = await fetch('/api/v1/accounts/accounts-by-alltime-points/').catch(handleErrors);
+
+                if(!response.ok) {
+                    throw new Error('Response was not ok!')
+                } else {
+                    const data = await response.json()
+                    setUserListByAllTimePoints(data);
+                }
+            }
+            getUsersByAllTimePoints()
         }
     }, [])
 
-    if(!userList) {
+    if(!userListByPoints || !userListByAllTimePoints) {
         return (
-            <div className="leaderboards-container">
+            <div className="leaderboards-view-container">
                 <h1>Loading...</h1>
             </div>
         )
     }
 
-    const leaderboardHTML = userList.sort((a, b) => {return b.points - a.points}).map(user => (
+    const leaderboardHTML = userListByPoints.sort((a, b) => {return b.points - a.points}).map(user => (
         <User user={user} key={user.id}/>
     ))
 
-    const alltimeLeaderboardHTML = userList.sort((a, b) => {return b.alltime_points - a.alltime_points}).map(user => (
+    const alltimeLeaderboardHTML = userListByAllTimePoints.sort((a, b) => {return b.alltime_points - a.alltime_points}).map(user => (
         <AllTimeUser user={user} key={user.id}/>
     ))
 
     return (
-        <div className="leaderboards-container">
-            <div>
-                <h1>Most Points Held Currently Leaderboard</h1>
-                {leaderboardHTML}
-            </div>
-            <div>
-            <h1>Most Points Earned All-time Leaderboard</h1>
-                {alltimeLeaderboardHTML}
+        <div className="leaderboards-view-container">
+            <div className='leaderboards-container'>
+                <div className='points-leaderboard'>
+                    <h1>Current Points Leaderboard</h1>
+                    <div>
+                        {leaderboardHTML} 
+                    </div>
+                </div>
+                <div className='divider-container'><div className='divider'></div></div>
+                <div className='alltime-points-leaderboard'>
+                    <h1>All-Time Earnings Leaderboard</h1>
+                    <div>
+                        {alltimeLeaderboardHTML}
+                    </div>
+                    
+                </div>
             </div>
         </div>
     )

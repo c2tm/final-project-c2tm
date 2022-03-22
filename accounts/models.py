@@ -17,8 +17,8 @@ class Account(models.Model):
     profile_img = models.ImageField(
         upload_to='account/', default='account/default-user.png')
     bio = models.TextField(max_length=150, blank=True)
-    points = models.IntegerField(default=0)
-    alltime_points = models.IntegerField(default=0)
+    points = models.IntegerField(default=1000)
+    alltime_points = models.IntegerField(default=1000)
     active = models.BooleanField(default=True)
     flagged = models.BooleanField(default=False)
     banned = models.BooleanField(default=False)

@@ -68,32 +68,34 @@ function PostCreate({loggedInUserInfo, userPostsList, setUserPostsList}) {
 
     const postCreateFormHTML = (
         <div className='create-form-container' onSubmit={handleSubmit}>
-            <Form>
-                <Form.Group className="mb-3">
+            <Form className='create-form'>
+                <Form.Group className="group mb-3">
                     <Form.Label>Video</Form.Label>
                     <Form.Control type="file" placeholder="JohnnyAppleseed1" onChange={(e) => setVideo(e.target.files[0])}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Question</Form.Label>
                     <Form.Control type="text" name="question" placeholder='In this video, does...?' value={newPost.question} onChange={handlePostChange}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Answer1</Form.Label>
                     <Form.Control type="text" name="answer1" placeholder='This?' value={newPost.answer1} onChange={handlePostChange}/>
                     <Form.Label>Answer2</Form.Label>
                     <Form.Control type="text" name="answer2" placeholder='That?' value={newPost.answer2} onChange={handlePostChange}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="correct-answer-group mb-3">
                     <Form.Label>Which answer is correct?</Form.Label>
                     <Form.Check type="radio" label='Answer 1' aria-label="radio 1" checked={answerButton === true} onChange={e => setAnswerButton(!answerButton)}/>
                     <Form.Check type="radio" label='Answer 2' aria-label="radio 1" checked={answerButton === false} onChange={e => setAnswerButton(!answerButton)}/>
                 </Form.Group>
-                <Button variant="primary" type="submit">
-                    Post
-                </Button>
-                <Button onClick={() => navigate(-1)}>
-                    Back
-                </Button>
+                <div className='button-group'>
+                    <Button variant="primary" className='custom-button' type="submit">
+                        Post
+                    </Button>
+                    <Button className='custom-button' onClick={() => navigate(-1)}>
+                        Back
+                    </Button>
+                </div>
             </Form>
         </div>
     )

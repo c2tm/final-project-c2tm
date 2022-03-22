@@ -100,32 +100,34 @@ function PostEdit({loggedInUserInfo, setUserPostsList, userPostsList}) {
 
     const postEditFormHTML = (
         <div className='edit-form-container' onSubmit={handleEditSubmit}>
-            <Form>
-                <Form.Group className="mb-3">
+            <Form className='edit-post-form'>
+                <Form.Group className="group mb-3">
                     <Form.Label>New Video File (If none added, current video will be used)</Form.Label>
                     <Form.Control type="file" placeholder="JohnnyAppleseed1" onChange={(e) => setVideo(e.target.files[0])}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Edit Question</Form.Label>
                     <Form.Control type="text" name="question" placeholder={placeholder.question} value={editPost.question} onChange={handlePostChange}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Edit Answer1</Form.Label>
                     <Form.Control type="text" name="answer1" placeholder={placeholder.answer1} value={editPost.answer1} onChange={handlePostChange}/>
                     <Form.Label>Edit Answer2</Form.Label>
                     <Form.Control type="text" name="answer2" placeholder={placeholder.answer2} value={editPost.answer2} onChange={handlePostChange}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Which answer is correct?</Form.Label>
                     <Form.Check type="radio" label='Answer 1' aria-label="radio 1" checked={answerButton === true} onChange={e => setAnswerButton(!answerButton)}/>
                     <Form.Check type="radio" label='Answer 2' aria-label="radio 1" checked={answerButton === false} onChange={e => setAnswerButton(!answerButton)}/>
                 </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-                <Button onClick={() => navigate(-1)}>
-                    Cancel
-                </Button>
+                <div className='edit-post-button-group'>
+                    <Button variant="primary" className='custom-button' type="submit">
+                        Submit
+                    </Button>
+                    <Button type='button' className='custom-button' onClick={() => navigate(-1)}>
+                        Cancel
+                    </Button>
+                </div>
             </Form>
         </div>
     )

@@ -4,8 +4,9 @@ import { useState } from 'react'
 import Cookies from 'js-cookie'
 import { handleErrors } from '../../utitlties/Utility'
 import { useNavigate } from 'react-router-dom'
+import '../posts/Post.css'
 
-function AdminPost({post, submittedPostList, setSubmittedPostList, postsList, setPostsList, update, setUpdate}) {
+function AdminPost({post, submittedPostList, setSubmittedPostList, postsList, setPostsList, loggedInUserInfo, update, setUpdate}) {
 
     const [phase, setPhase] = useState('Select an option...')
 
@@ -15,6 +16,11 @@ function AdminPost({post, submittedPostList, setSubmittedPostList, postsList, se
         e.preventDefault()
 
         let postChange;
+
+        if(phase === 'Select an option...') {
+            alert('Please select an option!')
+            return
+        }
 
         if(phase === 'Publish') {
             postChange = {
@@ -63,16 +69,24 @@ function AdminPost({post, submittedPostList, setSubmittedPostList, postsList, se
 
     }
 
+    const handleNameClick = () => {
+        console.log('iran')
+        if(loggedInUserInfo.pk !== post.user){
+            navigate(`/${post.user}/view/`)
+        } else {
+            navigate('/current-user-account-view/')
+        }
+    }
+
     const dropdownHTML = (
-        <DropdownButton id="dropdown-basic-button" title={phase}>
+        <DropdownButton className='custom-dropdown' id="dropdown-basic-button" title={phase}>
             <Dropdown.Item onClick={() => setPhase('Publish')}>Publish</Dropdown.Item>
             <Dropdown.Item onClick={() => setPhase('Reject')}>Reject</Dropdown.Item>
         </DropdownButton>
     )
-    const postGuessHTML = (
+    const adminPostHTML = (
         <div className="post">
-            <h1>{post.account_alias}</h1>
-            <h2>{post.username}</h2>
+            <h1 onClick={handleNameClick}>{post.account_alias}</h1>
             <div className="video">
                 <video controls>
                     <source src={post.video} type='video/mp4'/>               
@@ -87,15 +101,15 @@ function AdminPost({post, submittedPostList, setSubmittedPostList, postsList, se
                     <p>{post.answer2}</p>
                 </div>   
             </div>
-            <form onSubmit={handlePhaseChange}>
+            <form className='admin-form' onSubmit={handlePhaseChange}>
                 {dropdownHTML}
-                <button type='submit'>Submit</button>
+                <button type='submit' className='admin-post-submit-button'>Submit</button>
             </form>
             
         </div>
     )
 
-    return postGuessHTML
+    return adminPostHTML
 }
 
 export default AdminPost

@@ -7,7 +7,7 @@ function AllTimeUser({user}) {
     return (
         <div>
             <h1 onClick={() => navigate(`/${user.user}/view/`)}>{user.alias}</h1>
-            <h2>Total Points Earned: {user.alltime_points}</h2>
+            <h2>{user.alltime_points}</h2>
         </div>
     )
 }

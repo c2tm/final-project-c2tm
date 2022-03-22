@@ -97,24 +97,29 @@ function EditAccountView({accountInfo, setAccountInfo}) {
 
     const editFormHTML = (
         <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Image</Form.Label>
                     <Form.Control type="file" name="profile_img" onChange={(e) => setPicture(e.target.files[0])}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Alias</Form.Label>
                     <Form.Control type="text" name="alias" placeholder={accountInfo.alias} value={edit.alias} onChange={handleEditChange}/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="group mb-3">
                     <Form.Label>Bio</Form.Label>
                     <Form.Control as="textarea" rows={3} name="bio" placeholder={accountInfo.bio} value={edit.bio} onChange={handleEditChange}/>
                 </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-                <button type='button' onClick={handleCancelClick}>
-                    Cancel
-                </button>
+                <div className='edit-view-button-group'>
+                    <Button className='custom-button' type="submit">
+                        Submit
+                    </Button>
+                    <Button className='custom-button' type="button" onClick={handleCancelClick}>
+                        Cancel
+                    </Button>
+                    <Button className='custom-button' type="button" onClick={() => navigate('/delete-account/')}>
+                        Deactivate
+                    </Button>
+                </div>
         </Form>
     )
 
@@ -123,7 +128,6 @@ function EditAccountView({accountInfo, setAccountInfo}) {
             <div className='form-container'>
                 {editFormHTML}
             </div>
-            <button type='button' onClick={() => navigate('/delete-account/')}>Deactivate Account</button>
         </div>
         
     )
