@@ -4,6 +4,7 @@ import './AdminView.css'
 import Form from 'react-bootstrap/Form/'
 import AdminUserView from "./AdminUserView"
 
+
 function AdminView({setPostsList, postsList, loggedInUserInfo}) {
 
     const [submittedPostList, setSubmittedPostList] = useState(null)
@@ -11,6 +12,7 @@ function AdminView({setPostsList, postsList, loggedInUserInfo}) {
     const [heading, setHeading] = useState('Submitted Posts')
     const [view, setView] = useState(true);
     const [update, setUpdate] = useState(true);
+   
 
     useEffect(() => {
         if(!submittedPostList) {
@@ -53,6 +55,8 @@ function AdminView({setPostsList, postsList, loggedInUserInfo}) {
             </div>
         )
     }
+
+   
 
     const emptyPostListCheck = () => {
         if(submittedPostList.length === 0) {

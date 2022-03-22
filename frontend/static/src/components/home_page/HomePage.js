@@ -4,10 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { getLoginInfo, handleErrors } from "../../utitlties/Utility";
 import './HomePage.css'
 import Post from '../posts/Post';
+import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
 
-function HomePage({loggedInUserInfo, setPostsList, postsList, setUserToGet}) {
+function HomePage({loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsList, setAccountInfo, accountInfo}) {
 
     const [update, forceUpdate] = useState(true)
+    const [show, setShow] = useState(false)
+    const [modalText, setModaltext] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -28,9 +32,15 @@ function HomePage({loggedInUserInfo, setPostsList, postsList, setUserToGet}) {
 
     let postsListHTML;
 
+    console.log(postsList)
+
+    const handleClose = () => {
+        setShow(false);
+    }
+
     if(postsList && loggedInUserInfo) {
-        postsListHTML = postsList.map(post => (
-            <Post post={post} loggedInUserInfo={loggedInUserInfo} setPostsList={setPostsList} postsList={postsList} setUserToGet={setUserToGet} key={post.id}/>
+        postsListHTML = postsList.filter(post => post.account_active).map(post => (
+            <Post post={post} loggedInUserInfo={loggedInUserInfo} setLoggedInUserInfo={setLoggedInUserInfo} setPostsList={setPostsList} postsList={postsList} accountInfo={accountInfo} setAccountInfo={setAccountInfo} key={post.id}/>
         ))
     } else {
         postsListHTML = null
@@ -40,9 +50,11 @@ function HomePage({loggedInUserInfo, setPostsList, postsList, setUserToGet}) {
 
     return (
         <div className='homepage'>
+            
             <ul>
                 {postsListHTML}
             </ul>
+            <h1>You've reached the end...</h1>
         </div>
     )
 }

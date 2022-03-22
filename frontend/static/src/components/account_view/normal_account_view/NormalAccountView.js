@@ -13,6 +13,7 @@ function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserIn
    const [show, setShow] = useState(false);
    const params = useParams();
    const target = useRef(null);
+   const navigate = useNavigate()
 
     useEffect(() => {
 
@@ -69,10 +70,28 @@ function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserIn
        )
    }
 
+   if(userAccountInfo.banned) {
+    return (
+        <div className="account-view">
+               <div className="not-active">
+                    <h1 className="not-active-h1">Account is banned.</h1>
+                    <button className="custom-button" onClick={() => navigate('/')}>Home</button>
+               </div>
+               
+
+           </div>
+    )
+}
+
    if(userAccountInfo.active === false) {
        return (
-           <div>
-               <h1>Account is no longer active.</h1>
+           <div className="account-view">
+               <div className="not-active">
+                    <h1 className="not-active-h1">Account is no longer active.</h1>
+                    <button className="custom-button" onClick={() => navigate('/')}>Home</button>
+               </div>
+               
+
            </div>
        )
    }

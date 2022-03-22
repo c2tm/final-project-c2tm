@@ -100,7 +100,7 @@ class DeactivateAccount(views.APIView):
     permission_classes = (isUserOnly,)
 
     def get(self, request):
-        account = Account.objects.get(user=request.user)
+        account = Account.objects.get(user=request.user.id)
         account.active = False
         account.save()
         return response.Response({'message': 'deactivated!'})

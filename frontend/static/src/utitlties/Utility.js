@@ -4,7 +4,7 @@ export const handleErrors = (err) => {
     console.warn(err);
 }
 
-export const handleLogout = (navigate, setUserPostsList) => {
+export const handleLogout = (navigate) => {
     const logout = async () => {
         const options = {
             method: 'POST',
@@ -19,7 +19,6 @@ export const handleLogout = (navigate, setUserPostsList) => {
             throw new Error('Response was not ok!')
         } else {
           Cookies.remove('authorization')
-          setUserPostsList(null)
           navigate('/login/');
         }
     }

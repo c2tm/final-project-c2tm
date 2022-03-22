@@ -195,3 +195,19 @@
   justify-content: space-around;
   width: 10rem;
 }
+
+.preguesspost-modal > .modal-dialog > .modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.preguesspost-modal-h1 {
+  color: white;
+  font-size: 24px;
+}
+
+.preguesspost-modal-button {
+  width: 10rem;
+}

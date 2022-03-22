@@ -5,10 +5,13 @@ import './LoginRegis.css'
 import Cookies from 'js-cookie'
 import { handleErrors } from '../../utitlties/Utility'
 import { useNavigate } from 'react-router-dom'
+import Modal from 'react-bootstrap/Modal'
 
 function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
 
     const [html, setHtml] = useState(true);
+    const [show, setShow] = useState(false);
+    const [modalText, setModaltext] = useState('');
 
     const navigate = useNavigate()
 
@@ -22,6 +25,7 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
         email: '',
         password1: '',
         password2: '',
+        active: true,
     })
 
     const initialLoginState = {
@@ -34,6 +38,11 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
         email: '',
         password1: '',
         password2: '',
+    }
+
+    const modalTextSetter = text => {
+        setModaltext(text);
+        setShow(true);
     }
 
     const createAccount = async () => {
@@ -81,7 +90,7 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
                     navigate('/');
                     
                 } else {
-                    alert('Incorrect username or password')
+                    modalTextSetter('Incorrect username or password')
                 }
                 
             }
@@ -92,7 +101,7 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
     const handleRegister = () => {
 
         if (regis.password1 !== regis.password2) {
-            alert('Passwords do not match!');
+            modalTextSetter('Passwords do not match!');
             return
         }
 
@@ -108,7 +117,7 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
             const response = await fetch('/rest-auth/registration/', options).catch(handleErrors);
 
             if(!response.ok) {
-                alert('A user with this username or email already exist!')
+                modalTextSetter('Please check that all fields are filled in. If they are, a user with this username or email already exist!')
                 throw new Error('Response was not ok!')
             } else {
                 const data = await response.json()
@@ -150,6 +159,10 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
         setRegis(regis => ({ ...regis, [name]: value }));
       };
 
+    const handleClose = () => {
+        setShow(false);
+    }
+
     const loginHTML = (
         <Form onSubmit={handleSubmit} className='login-form'>
                 <Form.Group className="group mb-3">
@@ -190,10 +203,10 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
                     <Form.Control type="password" name="password2" placeholder='password123' value={regis.password2} onChange={handleRegisChange}/>
                 </Form.Group>
                 <div className='button-group'>
-                    <Button className='custom-button' type="submit">
+                    <Button className='custom-button' type="submit" >
                         Submit
                     </Button>
-                    <Button type="button" className='custom-button' onClick={handleClick}>
+                    <Button type="button" className='custom-button' onClick={handleClick} >
                         Back
                     </Button>
                 </div>
@@ -202,7 +215,14 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
     )
     return (
         <div className='login-regis-container'>
+            <Modal show={show} onHide={handleClose} className='login-view-modal'>
+                <h1 className='login-modal-h1'>{modalText}</h1>
+                <Button variant="secondary" className='custom-button login-modal-button' onClick={handleClose}>
+                    Close
+                </Button>
+            </Modal>
             <div className='form-container'>
+            
                 {html ? loginHTML : regisHTML}
             </div>
         </div>

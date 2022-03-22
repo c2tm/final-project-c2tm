@@ -66,37 +66,35 @@ class AnswerListCreateAPIView(generics.ListCreateAPIView):
         user = self.request.user.id
         return Answer.objects.filter(user=user)
 
-    def perform_create(self, serializer):
-        """
-        Saves the user information and sets it to user field
-        """
+    def create(self, request, *args, **kwargs):
 
         answer_dump_data = json.dumps(self.request.data)
         answer_data = json.loads(answer_dump_data)
 
-        points = answer_data['points_wagered']
+        points = int(answer_data['points_wagered'])
         answer_user = self.request.user
         answer_post = answer_data['post']
         answer_guessed = answer_data['user_answer']
-        post = Post.objects.get(id=answer_post)
-        user_account = Account.objects.get(user=answer_user)
+        post = Post.objects.get(id=answer_post)  # this is the post
+        user_account = Account.objects.get(
+            user=answer_user)  # this is the user account
 
-        correct_answer = post.correct_answer
+        correct_answer = post.correct_answer  # this is the correct answer
 
-        print(points)
-        print(user_account.points)
-
-        if answer_guessed == correct_answer:
+        if answer_guessed == correct_answer:  # if the user guessed the correct answer
             user_account.points = user_account.points + points
             user_account.alltime_points = user_account.alltime_points + points
         else:
             user_account.points = user_account.points - points
 
-        print(user_account.points)
-
         user_account.save()
+        return super(AnswerListCreateAPIView, self).create(request, *args, **kwargs)
 
-        serializer.save(user=answer_user)
+    def perform_create(self, serializer):
+        """
+        Saves the user information and sets it to user field
+        """
+        serializer.save(user=self.request.user)
 
 
 @ api_view(('POST',))

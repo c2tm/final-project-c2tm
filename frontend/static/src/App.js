@@ -77,28 +77,24 @@ function App() {
       </div>
   )
 
-
-  // console.log(accountInfo)
-  // console.log(postsList)
-  // console.log(loggedInUserInfo)
+  console.log(loggedInUserInfo)
 
   return (
     <div className="App">
       {displaySidebar() && sidebarHTML}
       <Routes>
-        <Route path='/' element={<HomePage postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
+        <Route path='/' element={<HomePage postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo} setLoggedInUserInfo={setLoggedInUserInfo} accountInfo={accountInfo} setAccountInfo={setAccountInfo}/>}/>
         <Route path='login' element={<LoginRegis setLoggedInUserInfo={setLoggedInUserInfo} setAccountInfo={setAccountInfo} />}/>
         <Route path='current-user-account-view' element={<YourAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPostsList={setPostsList} userPostsList={userPostsList} setUserPostsList={setUserPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
-        <Route path=':accountId/view' element={<NormalAccountView postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo} accountInfo={accountInfo}/>}/>
+        <Route path=':accountId/view' element={<NormalAccountView postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo} setLoggedInUserInfo={setLoggedInUserInfo} accountInfo={accountInfo}/>}/>
         <Route path='edit' element={<EditAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}/>
-        <Route path='delete-account' element={<AccountDeletion />}/> 
+        <Route path='delete-account' element={<AccountDeletion setUserPostsList={setUserPostsList}/>}/> 
         <Route path='account-reactivation' element={<AccountReactivation setAccountInfo={setAccountInfo} loggedInUserInfo={loggedInUserInfo}/>}/>
         <Route path='create-post' element={<PostCreate setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
         <Route path='edit-post/:postId' element={<PostEdit setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
         <Route path="admin" element={<AdminView postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
         <Route path='leaderboards' element={<Leaderboard />}/>
       </Routes>
-
     </div>
   );
 }

@@ -88,6 +88,14 @@ function YourAccountView({accountInfo, setAccountInfo, setPostsList, userPostsLi
         ))
     }
 
+    if(userPostsList && userPostsList.length === 0) {
+        postHTML = (
+            <div className="no-posts-div">
+                <h1>No posts yet...</h1>
+            </div>
+        )
+    }
+
     return (
         <div className="account-view">
             {accountInfo && accountHTML}

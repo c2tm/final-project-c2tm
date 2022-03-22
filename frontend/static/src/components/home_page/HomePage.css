@@ -10,3 +10,8 @@
 .homepage > ul {
   padding-left: 0px;
 }
+
+.homepage > h1 {
+  margin: 1rem 0 0 0;
+  opacity: 0.3;
+}

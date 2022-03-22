@@ -6,13 +6,15 @@ import './Post.css'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, setUserPostsList, update, setUpdate}) {
+function Post({post, loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsList, userPostsList, setUserPostsList, update, setUpdate, accountInfo, setAccountInfo}) {
 
     const [answer1State, setAnswer1State] = useState(false);
     const [answer2State, setAnswer2State] = useState(false);
     const [forceUpdate, setForceUpdate] = useState(true);
     const [wager, setWager] = useState('');
     const [show, setShow] = useState(false);
+    const [show2, setShow2] = useState(false);
+    const [modalText, setModalText] = useState('');
 
     const navigate = useNavigate()
     
@@ -58,16 +60,21 @@ function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, s
         }
     }
 
+    const modalTextSetter = text => {
+        setModalText(text);
+        setShow2(true);
+    }
+
     const handleAnswerSubmit = (e) => {
         e.preventDefault()
 
         if(!answer1State && !answer2State) {
-            alert('One guess must be selected!')
+            modalTextSetter('One guess must be selected!')
             return
         }
 
         if(Number(wager) > loggedInUserInfo.account_points) {
-            alert('Not enough points!')
+            modalTextSetter('Not enough points!')
             return
         }
         
@@ -95,11 +102,30 @@ function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, s
             } else {
                 const data = await response.json()
                 console.log(data);
+
                 let copyList = postsList;
                 let currentPostIndex = copyList.findIndex(e => e.id === post.id);
                 let newAnswerArray = copyList[currentPostIndex].answers;
+
                 newAnswerArray.push(data);
                 copyList[currentPostIndex].answers = newAnswerArray;
+
+                let copyAccount
+
+                if(loggedInUserInfo) {
+                    copyAccount = loggedInUserInfo;
+                    copyAccount.account_points = data.user_points;
+                }
+
+                let copyAccount2;
+                if(accountInfo) {
+                    copyAccount2 = accountInfo
+                    copyAccount2.points = data.user_points
+                }
+            
+
+                setAccountInfo(copyAccount2);
+                setLoggedInUserInfo(copyAccount);
                 setPostsList(copyList);
                 setForceUpdate(!forceUpdate);
             }
@@ -154,9 +180,9 @@ function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, s
     const handleLikeAndUnlikeButtonHTML = () => {
         const currentPostIndex = postsList.findIndex(e => e.id === post.id);
         if(postsList[currentPostIndex].likes.includes(loggedInUserInfo.pk)) {
-            return <button type="button" className='like-button unliked' onClick={handleLikeClick}>{post.likes.length} <span>&#9829;</span></button>
+            return <button type="button" className='like-button unliked' onClick={handleLikeClick}><span>&#9829;</span> {post.likes.length}</button>
         } else {
-            return <button type="button" className='like-button liked' onClick={handleLikeClick}>{post.likes.length} <span>&#9825;</span></button>
+            return <button type="button" className='like-button liked' onClick={handleLikeClick}><span>&#9825;</span> {post.likes.length}</button>
         }
     }
 
@@ -225,7 +251,7 @@ function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, s
                 </video>
             </div>
             <div className="likes-container">
-                {post.user !== loggedInUserInfo.pk ? handleLikeAndUnlikeButtonHTML() : <p className="like-amount">{post.likes.length} <span>&#9829;</span></p>}
+                {post.user !== loggedInUserInfo.pk ? handleLikeAndUnlikeButtonHTML() : <p className="like-amount"><span>&#9829;</span>{post.likes.length} </p>}
             </div>
             {(post.phase === 'SB' || post.phase === 'RJ') && translatePhase(post)}
             <h3>{post.question}</h3>
@@ -249,9 +275,20 @@ function Post({post, loggedInUserInfo, setPostsList, postsList, userPostsList, s
 
     const preGuessHTML = (
         <div className="post" >
+            <Modal show={show2} onHide={() => setShow2(false)} className='preguesspost-modal'>
+                <h1 className='preguesspost-modal-h1'>{modalText}</h1>
+                <Button variant="secondary" className='custom-button preguesspost-modal-button' onClick={() => setShow2(false)}>
+                    Close
+                </Button>
+            </Modal>
             <h1 onClick={handleNameClick}>{post.account_alias}</h1>
-            <div className="thumbnail">
+            {/* <div className="thumbnail">
                 <img src={post.thumbnail} alt='video-thumbnail'/>
+            </div> */}
+            <div className="video">
+                <video>
+                    <source src={post.video} type='video/mp4'/>               
+                </video>
             </div>
             {/* <div className="likes-container">
                 <p>{`${post.likes.length} Likes`}</p>

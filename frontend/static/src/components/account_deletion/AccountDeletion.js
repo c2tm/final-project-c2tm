@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { handleErrors, handleLogout } from "../../utitlties/Utility";
 import './AccountDeletion.css'
 
-function AccountDeletion({setAccountInfo}) {
+function AccountDeletion({setAccountInfo, setUserPostsList}) {
 
     const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ function AccountDeletion({setAccountInfo}) {
             } else {
                 const data = await response.json()
                 console.log(data)
-                handleLogout(navigate)
+                handleLogout(navigate, setUserPostsList)
             }
         }
         deactivate();

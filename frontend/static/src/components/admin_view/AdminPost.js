@@ -4,13 +4,23 @@ import { useState } from 'react'
 import Cookies from 'js-cookie'
 import { handleErrors } from '../../utitlties/Utility'
 import { useNavigate } from 'react-router-dom'
+import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
+
 import '../posts/Post.css'
 
 function AdminPost({post, submittedPostList, setSubmittedPostList, postsList, setPostsList, loggedInUserInfo, update, setUpdate}) {
 
     const [phase, setPhase] = useState('Select an option...')
+    const [show2, setShow2] = useState(false);
+    const [modalText, setModalText] = useState('');
 
     const navigate = useNavigate()
+
+    const modalTextSetter = text => {
+        setModalText(text);
+        setShow2(true);
+    }
 
     const handlePhaseChange = e => {
         e.preventDefault()
@@ -18,7 +28,7 @@ function AdminPost({post, submittedPostList, setSubmittedPostList, postsList, se
         let postChange;
 
         if(phase === 'Select an option...') {
-            alert('Please select an option!')
+            modalTextSetter('Please select an option!')
             return
         }
 
@@ -53,9 +63,9 @@ function AdminPost({post, submittedPostList, setSubmittedPostList, postsList, se
                 copyList.splice(postIndex, 1);
 
                 if(postsList && postChange.phase === 'PB') {
+                    post.phase = 'PB'
                     let copyList2 = postsList;
-                    const postIndex2 = copyList2.findIndex(thisPost => thisPost.id == post.id);
-                    copyList2[postIndex2].phase = postChange.phase
+                    copyList2.unshift(post)
                     setPostsList(copyList2);
                 }
 
@@ -86,6 +96,12 @@ function AdminPost({post, submittedPostList, setSubmittedPostList, postsList, se
     )
     const adminPostHTML = (
         <div className="post">
+            <Modal show={show2} onHide={() => setShow2(false)} className='preguesspost-modal'>
+                <h1 className='preguesspost-modal-h1'>{modalText}</h1>
+                <Button variant="secondary" className='custom-button preguesspost-modal-button' onClick={() => setShow2(false)}>
+                    Close
+                </Button>
+            </Modal>
             <h1 onClick={handleNameClick}>{post.account_alias}</h1>
             <div className="video">
                 <video controls>

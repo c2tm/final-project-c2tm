@@ -13,6 +13,36 @@
   );
 }
 
+.login-view-modal {
+  margin: 0 0 0 0;
+}
+
+.login-view-modal > .modal-dialog > .modal-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-modal-h1 {
+  color: white;
+  font-size: 24px;
+}
+
+.login-modal-button {
+  outline: 0;
+  width: 5rem;
+}
+
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.btn-primary:focus {
+  background-color: var(--accent-color);
+}
+
 .form-container {
   width: 30%;
   margin: 0 0 8rem 0;
