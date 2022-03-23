@@ -88,7 +88,7 @@ function AdminUserView({account, flaggedAccounts, setFlaggedAccounts, update, se
     return (
 
         <div>
-            <Modal show={show} onHide={handleClose} centered>
+            <Modal show={show} onHide={handleClose} centered className='admin-user-view-modal'>
                 <Modal.Header>
                 <Modal.Title>Options</Modal.Title>
                 <CloseButton variant="white" onClick={() => setShow(!show)}/>

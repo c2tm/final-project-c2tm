@@ -115,7 +115,7 @@
   cursor: pointer;
 }
 
-.modal-content {
+.admin-user-view-modal > .modal-dialog > .modal-content {
   font-family: "Syne", sans-serif;
   margin: 0 0 7rem 0;
 }

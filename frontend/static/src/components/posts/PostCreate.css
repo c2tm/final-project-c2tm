@@ -41,3 +41,22 @@
   background-color: rgb(211, 0, 211);
   border-color: rgb(211, 0, 211);
 }
+
+.create-post-loading-modal > .modal-dialog {
+  margin: 0 0 0 33.55rem;
+}
+
+.create-post-loading-modal > .modal-dialog > .modal-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(175, 175, 175, 0);
+  border: none;
+}
+
+.custom-spinner {
+  margin: 1rem 0 0 0;
+  width: 7rem;
+  height: 7rem;
+  color: var(--accent-color);
+}

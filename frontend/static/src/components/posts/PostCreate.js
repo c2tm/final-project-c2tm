@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
+import Spinner from 'react-bootstrap/Spinner'
 
 import './PostCreate.css'
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +13,7 @@ function PostCreate({loggedInUserInfo, userPostsList, setUserPostsList, accountI
 
     const [video, setVideo] = useState(undefined);
     const [answerButton, setAnswerButton] = useState(true);
+    const [show, setShow] = useState(false);
 
     const [newPost, setNewPost] = useState({
         question: '',
@@ -18,12 +21,16 @@ function PostCreate({loggedInUserInfo, userPostsList, setUserPostsList, accountI
         answer2: '',
     })
 
+    const navigate = useNavigate();
+
     const handlePostChange = e => {
         const { name, value } = e.target;
         setNewPost(newPost => ({ ...newPost, [name]: value }));
       };
 
-    const navigate = useNavigate()
+    const handleClose = () => {
+        setShow(false);
+    }
 
     const handleSubmit = e => {
 
@@ -47,6 +54,8 @@ function PostCreate({loggedInUserInfo, userPostsList, setUserPostsList, accountI
         } else {
             postFormData.append('correct_answer', 'answer2');
         }
+
+        setShow(true);
 
         const createPost = async () => {
             const options = {
@@ -110,6 +119,11 @@ function PostCreate({loggedInUserInfo, userPostsList, setUserPostsList, accountI
 
     return (
         <div className='post-create-container'>
+            <Modal backdrop='static' show={show} onHide={handleClose} className='create-post-loading-modal'>
+            <Spinner animation="border" role="status" className='custom-spinner'>
+                <span className="visually-hidden">Loading...</span>
+            </Spinner>
+            </Modal>
             {postCreateFormHTML}
         </div>
     )
