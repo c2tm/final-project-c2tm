@@ -54,7 +54,7 @@ function YourAccountView({accountInfo, setAccountInfo, setPostsList, userPostsLi
 
    if(!accountInfo) {
        return (
-           <div>
+           <div className="account-view">
                <h1>Loading Account Info...</h1>
            </div>
        )
