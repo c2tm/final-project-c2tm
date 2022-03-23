@@ -77,7 +77,7 @@ function PostCreate({loggedInUserInfo, userPostsList, setUserPostsList, accountI
                     copyList.unshift(data);
                     setUserPostsList(copyList);
                 }
-                navigate('/current-user-account-view/');
+                navigate('/me/');
             }
         }
         createPost()

@@ -55,7 +55,7 @@ function EditAccountView({accountInfo, setAccountInfo}) {
     }
 
     const handleCancelClick = () => {
-        navigate('/current-user-account-view/');
+        navigate('/me/');
     }
 
     const handleSubmit = e => {
@@ -100,7 +100,7 @@ function EditAccountView({accountInfo, setAccountInfo}) {
             } else {
                 const data = await response.json();
                 setAccountInfo(data);
-                navigate('/current-user-account-view/');
+                navigate('/me/');
             }
         }
         editAccount();

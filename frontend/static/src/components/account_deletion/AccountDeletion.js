@@ -28,7 +28,7 @@ function AccountDeletion({setAccountInfo, setUserPostsList}) {
                 <h1>Are you sure you want to deactivate your account?</h1>
                 <div>
                     <button type="button" className="deactivate-button" onClick={handleDeactivateClick}>Yes</button>
-                    <button type="button" className="deactivate-button" onClick={() => navigate('/current-user-account-view/')}>No</button>
+                    <button type="button" className="deactivate-button" onClick={() => navigate('/me/')}>No</button>
                 </div>
             </div>
         </div>

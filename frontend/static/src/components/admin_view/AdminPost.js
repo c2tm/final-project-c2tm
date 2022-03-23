@@ -84,7 +84,7 @@ function AdminPost({post, submittedPostList, setSubmittedPostList, postsList, se
         if(loggedInUserInfo.pk !== post.user){
             navigate(`/${post.user}/view/`)
         } else {
-            navigate('/current-user-account-view/')
+            navigate('/me/')
         }
     }
 

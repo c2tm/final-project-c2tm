@@ -90,8 +90,6 @@ function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserIn
                     <h1 className="not-active-h1">Account is no longer active.</h1>
                     <button className="custom-button" onClick={() => navigate('/')}>Home</button>
                </div>
-               
-
            </div>
        )
    }

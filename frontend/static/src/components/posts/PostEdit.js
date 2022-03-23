@@ -94,7 +94,7 @@ function PostEdit({loggedInUserInfo, setUserPostsList, userPostsList, accountInf
                 const postId = copyList.findIndex(post => post.id == data.id);
                 copyList.splice(postId, 1, data);
                 setUserPostsList(copyList);
-                navigate('/current-user-account-view/')
+                navigate('/me/')
             }
         }
         editForm();

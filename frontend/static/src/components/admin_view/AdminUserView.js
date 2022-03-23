@@ -81,7 +81,7 @@ function AdminUserView({account, flaggedAccounts, setFlaggedAccounts, update, se
         if(loggedInUserInfo.pk !== account.user){
             navigate(`/${account.user}/view/`)
         } else {
-            navigate('/current-user-account-view/')
+            navigate('/me/')
         }
     }
 

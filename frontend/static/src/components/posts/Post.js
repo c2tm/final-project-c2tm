@@ -195,7 +195,7 @@ function Post({post, loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsL
         if(loggedInUserInfo.pk !== post.user){
             navigate(`/${post.user}/view/`)
         } else {
-            navigate('/current-user-account-view/')
+            navigate('/me/')
         }
     }
 

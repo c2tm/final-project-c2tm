@@ -78,7 +78,7 @@ function App() {
 
   const displaySidebar = () => {
     
-    if (location.pathname === '/' || location.pathname === '/current-user-account-view/' || location.pathname.includes('view') || location.pathname === '/admin/' || location.pathname === '/leaderboards/') {
+    if (location.pathname === '/' || location.pathname === '/me/' || location.pathname.includes('view') || location.pathname === '/admin/' || location.pathname === '/leaderboards/') {
       return true
     } else {
       return false
@@ -90,7 +90,7 @@ function App() {
           <div className="points">{points}</div>
           <div className="sidebar-button-group">
               {location.pathname !== '/' && <button onClick={() => navigate('/')}>Home</button>}
-              <button type="button" onClick={() => navigate('/current-user-account-view/')}>View Profile</button>
+              <button type="button" onClick={() => navigate('/me/')}>View Profile</button>
               <button type="button" onClick={() => navigate('/leaderboards/')}>Leaderboards</button>
               <button type="button" onClick={() => navigate('/create-post/')}>Create Post</button>
               {loggedInUserInfo && (loggedInUserInfo.is_superuser && <button type="button" onClick={() => navigate('/admin/')}>Admin View</button>)}
@@ -106,7 +106,7 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo} setLoggedInUserInfo={setLoggedInUserInfo} accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPoints={setPoints} points={points}/>}/>
         <Route path='login' element={<LoginRegis setLoggedInUserInfo={setLoggedInUserInfo} setAccountInfo={setAccountInfo} setPoints={setPoints}/>}/>
-        <Route path='current-user-account-view' element={<YourAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPostsList={setPostsList} userPostsList={userPostsList} setUserPostsList={setUserPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
+        <Route path='me' element={<YourAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPostsList={setPostsList} userPostsList={userPostsList} setUserPostsList={setUserPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
         <Route path=':accountId/view' element={<NormalAccountView postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo} setLoggedInUserInfo={setLoggedInUserInfo} accountInfo={accountInfo} setPoints={setPoints} points={points}/>}/>
         <Route path='edit' element={<EditAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}/>
         <Route path='delete-account' element={<AccountDeletion setUserPostsList={setUserPostsList} setAccountInfo={setAccountInfo}/>}/> 
