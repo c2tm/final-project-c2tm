@@ -26,6 +26,8 @@ function App() {
 
   const [accountInfo, setAccountInfo] = useState(null);
 
+  const [points, setPoints] = useState(null);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -39,19 +41,40 @@ function App() {
     } else {
       const json = await response.json();
       setLoggedInUserInfo(json);
-      console.log(json)
+      setPoints(json.account_points);
     }
 
   }, []); 
-
   
   useEffect(() => {
 
-    if((loggedInUserInfo && !loggedInUserInfo.account_active) || (accountInfo && !accountInfo.active)) {
-      navigate('/account-reactivation/')
-    }
+    console.log(loggedInUserInfo)
+    console.log(accountInfo)
+
+      if(accountInfo && !loggedInUserInfo) {
+        if(!accountInfo.active) {
+          console.log('hi1')
+          navigate('/account-reactivation/')
+        }
+      }
+
+      if(loggedInUserInfo) {
+        if(loggedInUserInfo.account_active !== null && !loggedInUserInfo.account_active) {
+          console.log('hi')
+          navigate('/account-reactivation/')
+        }
+      }
 
   }, [loggedInUserInfo, accountInfo])
+
+  const handleLogoutClick = () => {
+    setUserPostsList(null)
+    setPostsList(null)
+    setLoggedInUserInfo(null)
+    setAccountInfo(null)
+    handleLogout(navigate, setUserPostsList)
+   
+  }
 
   const displaySidebar = () => {
     
@@ -64,35 +87,33 @@ function App() {
 
   const sidebarHTML = (
       <div className="sidebar">
-          <div className="points">{(loggedInUserInfo && loggedInUserInfo.account_points) || (accountInfo && accountInfo.points)}</div>
+          <div className="points">{points}</div>
           <div className="sidebar-button-group">
               {location.pathname !== '/' && <button onClick={() => navigate('/')}>Home</button>}
               <button type="button" onClick={() => navigate('/current-user-account-view/')}>View Profile</button>
               <button type="button" onClick={() => navigate('/leaderboards/')}>Leaderboards</button>
               <button type="button" onClick={() => navigate('/create-post/')}>Create Post</button>
               {loggedInUserInfo && (loggedInUserInfo.is_superuser && <button type="button" onClick={() => navigate('/admin/')}>Admin View</button>)}
-              <button type="button" onClick={() => handleLogout(navigate, setUserPostsList)}>Logout</button>
+              <button type="button" onClick={() => handleLogoutClick()}>Logout</button>
           </div>
             
       </div>
   )
-
-  console.log(loggedInUserInfo)
-
+  
   return (
     <div className="App">
       {displaySidebar() && sidebarHTML}
       <Routes>
-        <Route path='/' element={<HomePage postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo} setLoggedInUserInfo={setLoggedInUserInfo} accountInfo={accountInfo} setAccountInfo={setAccountInfo}/>}/>
-        <Route path='login' element={<LoginRegis setLoggedInUserInfo={setLoggedInUserInfo} setAccountInfo={setAccountInfo} />}/>
+        <Route path='/' element={<HomePage postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo} setLoggedInUserInfo={setLoggedInUserInfo} accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPoints={setPoints} points={points}/>}/>
+        <Route path='login' element={<LoginRegis setLoggedInUserInfo={setLoggedInUserInfo} setAccountInfo={setAccountInfo} setPoints={setPoints}/>}/>
         <Route path='current-user-account-view' element={<YourAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPostsList={setPostsList} userPostsList={userPostsList} setUserPostsList={setUserPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
-        <Route path=':accountId/view' element={<NormalAccountView postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo} setLoggedInUserInfo={setLoggedInUserInfo} accountInfo={accountInfo}/>}/>
+        <Route path=':accountId/view' element={<NormalAccountView postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo} setLoggedInUserInfo={setLoggedInUserInfo} accountInfo={accountInfo} setPoints={setPoints} points={points}/>}/>
         <Route path='edit' element={<EditAccountView accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}/>
-        <Route path='delete-account' element={<AccountDeletion setUserPostsList={setUserPostsList}/>}/> 
+        <Route path='delete-account' element={<AccountDeletion setUserPostsList={setUserPostsList} setAccountInfo={setAccountInfo}/>}/> 
         <Route path='account-reactivation' element={<AccountReactivation setAccountInfo={setAccountInfo} loggedInUserInfo={loggedInUserInfo}/>}/>
-        <Route path='create-post' element={<PostCreate setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
-        <Route path='edit-post/:postId' element={<PostEdit setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
-        <Route path="admin" element={<AdminView postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
+        <Route path='create-post' element={<PostCreate setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo} accountInfo={accountInfo}/>}/>
+        <Route path='edit-post/:postId' element={<PostEdit setUserPostsList={setUserPostsList} userPostsList={userPostsList} loggedInUserInfo={loggedInUserInfo} accountInfo={accountInfo}/>}/>
+        <Route path="admin" element={<AdminView points={points} setPoints={setPoints} postsList={postsList} setPostsList={setPostsList} loggedInUserInfo={loggedInUserInfo}/>}/>
         <Route path='leaderboards' element={<Leaderboard />}/>
       </Routes>
     </div>

@@ -6,7 +6,7 @@ import './Post.css'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-function Post({post, loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsList, userPostsList, setUserPostsList, update, setUpdate, accountInfo, setAccountInfo}) {
+function Post({post, loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsList, userPostsList, setUserPostsList, update, setUpdate, accountInfo, setAccountInfo, points, setPoints}) {
 
     const [answer1State, setAnswer1State] = useState(false);
     const [answer2State, setAnswer2State] = useState(false);
@@ -17,14 +17,18 @@ function Post({post, loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsL
     const [modalText, setModalText] = useState('');
 
     const navigate = useNavigate()
+
+    console.log(accountInfo)
     
     const handleAnswer1 = () => {
         for(let i = 0; i < post.answers.length; i++) {
-            if(post.answers[i].profile === loggedInUserInfo.account_id) {
-                if(post.answers[i].user_answer === 'answer1' && post.correct_answer === 'answer1') {
-                    return 'correct-answer'
-                } else if(post.answers[i].user_answer === 'answer1' && post.correct_answer === 'answer2') {
-                    return 'incorrect-answer'
+            if(loggedInUserInfo || accountInfo) {
+                if((loggedInUserInfo.account_id && post.answers[i].profile === loggedInUserInfo.account_id) || (accountInfo && post.answers[i].profile === accountInfo.id)) {
+                    if(post.answers[i].user_answer === 'answer1' && post.correct_answer === 'answer1') {
+                        return 'correct-answer'
+                    } else if(post.answers[i].user_answer === 'answer1' && post.correct_answer === 'answer2') {
+                        return 'incorrect-answer'
+                    }
                 }
             }
         }
@@ -32,11 +36,13 @@ function Post({post, loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsL
 
     const handleAnswer2 = () => {
         for(let i = 0; i < post.answers.length; i++) {
-            if(post.answers[i].profile === loggedInUserInfo.account_id) {
-                if(post.answers[i].user_answer === 'answer2' && post.correct_answer === 'answer2') {
-                    return 'correct-answer'
-                } else if(post.answers[i].user_answer === 'answer2' && post.correct_answer === 'answer1') {
-                    return 'incorrect-answer'
+            if(loggedInUserInfo || accountInfo) {
+                if((loggedInUserInfo.account_id && post.answers[i].profile === loggedInUserInfo.account_id) || (accountInfo && post.answers[i].profile === accountInfo.id)) {
+                    if(post.answers[i].user_answer === 'answer2' && post.correct_answer === 'answer2') {
+                        return 'correct-answer'
+                    } else if(post.answers[i].user_answer === 'answer2' && post.correct_answer === 'answer1') {
+                        return 'incorrect-answer'
+                    }
                 }
             }
         }
@@ -73,16 +79,26 @@ function Post({post, loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsL
             return
         }
 
-        if(Number(wager) > loggedInUserInfo.account_points) {
+        if(Number(wager) > points) {
             modalTextSetter('Not enough points!')
             return
         }
         
         let newAnswer = {
             user_answer: answer1State ? 'answer1' : 'answer2', 
-            profile: loggedInUserInfo.account_id,
             post: post.id,
             points_wagered: Number(wager),
+        }
+
+        if(loggedInUserInfo.account_id) {
+            newAnswer.profile = loggedInUserInfo.account_id
+        } else if (accountInfo.id) {
+            newAnswer.profile = accountInfo.id
+        }
+
+        if(!loggedInUserInfo.account_id && !accountInfo.id) {
+            alert('ERROR!')
+            return
         }
 
         const submitAnswer = async () => {
@@ -110,22 +126,10 @@ function Post({post, loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsL
                 newAnswerArray.push(data);
                 copyList[currentPostIndex].answers = newAnswerArray;
 
-                let copyAccount
+                console.log()
 
-                if(loggedInUserInfo) {
-                    copyAccount = loggedInUserInfo;
-                    copyAccount.account_points = data.user_points;
-                }
-
-                let copyAccount2;
-                if(accountInfo) {
-                    copyAccount2 = accountInfo
-                    copyAccount2.points = data.user_points
-                }
-            
-
-                setAccountInfo(copyAccount2);
-                setLoggedInUserInfo(copyAccount);
+                setPoints(data.user_points);
+                
                 setPostsList(copyList);
                 setForceUpdate(!forceUpdate);
             }
@@ -318,11 +322,11 @@ function Post({post, loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsL
 
     if(post.answers !== []) {
         let answered = false;
-        for(let i = 0; i < post.answers.length; i++) {
-            if(post.answers[i].profile === loggedInUserInfo.account_id) {
-                answered = true
+            for(let i = 0; i < post.answers.length; i++) {
+                if((loggedInUserInfo && post.answers[i].profile === loggedInUserInfo.account_id) || (accountInfo && post.answers[i].profile === accountInfo.id)) {
+                    answered = true
+                }
             }
-        }
         if(answered) {
             return postGuessHTML
         }

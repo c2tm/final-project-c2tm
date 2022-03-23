@@ -15,6 +15,7 @@ function AccountDeletion({setAccountInfo, setUserPostsList}) {
             } else {
                 const data = await response.json()
                 console.log(data)
+                setAccountInfo(null)
                 handleLogout(navigate, setUserPostsList)
             }
         }

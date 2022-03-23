@@ -7,7 +7,7 @@ import './PostEdit.css'
 import Cookies from 'js-cookie';
 import { handleErrors } from '../../utitlties/Utility';
 
-function PostEdit({loggedInUserInfo, setUserPostsList, userPostsList}) {
+function PostEdit({loggedInUserInfo, setUserPostsList, userPostsList, accountInfo}) {
 
     const [video, setVideo] = useState(undefined);
     const [answerButton, setAnswerButton] = useState(true);
@@ -58,7 +58,13 @@ function PostEdit({loggedInUserInfo, setUserPostsList, userPostsList}) {
             editFormData.append('answer2', editPost.answer2);
         }
 
-        editFormData.append('account', loggedInUserInfo.account_id);
+        if(loggedInUserInfo.account_id) {
+            editFormData.append('account', loggedInUserInfo.account_id);
+        } else if(accountInfo.id) {
+            editFormData.append('account', accountInfo.id)
+        }
+
+        
 
         if(video) {
             editFormData.append('video', video);

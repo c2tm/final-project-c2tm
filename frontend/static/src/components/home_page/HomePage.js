@@ -7,12 +7,7 @@ import Post from '../posts/Post';
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-function HomePage({loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsList, setAccountInfo, accountInfo}) {
-
-    const [update, forceUpdate] = useState(true)
-    const [show, setShow] = useState(false)
-    const [modalText, setModaltext] = useState(false)
-    const navigate = useNavigate()
+function HomePage({loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsList, setAccountInfo, accountInfo,points, setPoints}) {
 
     useEffect(() => {
         if(!postsList) {
@@ -23,7 +18,10 @@ function HomePage({loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsLis
                     throw new Error('Response was not ok!')
                 } else {
                     const data = await response.json()
-                    setPostsList(data);
+                    let copyList = data.sort((a, b) => {
+                        return b.id - a.id;
+                    })
+                    setPostsList(copyList);
                 }
             }
             getPosts()
@@ -32,21 +30,13 @@ function HomePage({loggedInUserInfo, setLoggedInUserInfo, setPostsList, postsLis
 
     let postsListHTML;
 
-    console.log(postsList)
-
-    const handleClose = () => {
-        setShow(false);
-    }
-
     if(postsList && loggedInUserInfo) {
         postsListHTML = postsList.filter(post => post.account_active).map(post => (
-            <Post post={post} loggedInUserInfo={loggedInUserInfo} setLoggedInUserInfo={setLoggedInUserInfo} setPostsList={setPostsList} postsList={postsList} accountInfo={accountInfo} setAccountInfo={setAccountInfo} key={post.id}/>
+            <Post post={post} points={points} setPoints={setPoints} loggedInUserInfo={loggedInUserInfo} setLoggedInUserInfo={setLoggedInUserInfo} setPostsList={setPostsList} postsList={postsList} accountInfo={accountInfo} setAccountInfo={setAccountInfo} key={post.id}/>
         ))
     } else {
         postsListHTML = null
     }
-
-    
 
     return (
         <div className='homepage'>

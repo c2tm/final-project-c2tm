@@ -5,6 +5,8 @@ import './EditAccountView.css'
 import { handleErrors } from '../../utitlties/Utility'
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
+import Modal from 'react-bootstrap/Modal'
+
 
 function EditAccountView({accountInfo, setAccountInfo}) {
 
@@ -14,7 +16,10 @@ function EditAccountView({accountInfo, setAccountInfo}) {
 
     })
 
-    const [picture, setPicture] = useState(null)
+    const [picture, setPicture] = useState(null);
+
+    const [show, setShow] = useState(false);
+    const [modalText, setModalText] = useState('');
 
     const navigate = useNavigate()
 
@@ -35,6 +40,15 @@ function EditAccountView({accountInfo, setAccountInfo}) {
         }
     },[])
 
+    const modalTextSetter = text => {
+        setModalText(text);
+        setShow(true);
+    }
+
+    const handleClose = () => {
+        setShow(false)
+    }
+
     const handleEditChange = e => {
         const { name, value } = e.target;
         setEdit(edit => ({ ...edit, [name]: value }));
@@ -46,6 +60,11 @@ function EditAccountView({accountInfo, setAccountInfo}) {
 
     const handleSubmit = e => {
         e.preventDefault();
+
+        if(edit.bio.length > 20) {
+            modalTextSetter('Bio is too long!')
+            return
+        }
 
         let editObject = new FormData();
 
@@ -125,6 +144,12 @@ function EditAccountView({accountInfo, setAccountInfo}) {
 
     return (
         <div className='edit-account-view-container'>
+            <Modal show={show} onHide={handleClose} className='login-view-modal'>
+                <h1 className='login-modal-h1'>{modalText}</h1>
+                <Button variant="secondary" className='custom-button login-modal-button' onClick={handleClose}>
+                    Close
+                </Button>
+            </Modal>
             <div className='form-container'>
                 {editFormHTML}
             </div>

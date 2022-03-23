@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { handleErrors } from '../../utitlties/Utility';
 
-function PostCreate({loggedInUserInfo, userPostsList, setUserPostsList}) {
+function PostCreate({loggedInUserInfo, userPostsList, setUserPostsList, accountInfo}) {
 
     const [video, setVideo] = useState(undefined);
     const [answerButton, setAnswerButton] = useState(true);
@@ -34,7 +34,13 @@ function PostCreate({loggedInUserInfo, userPostsList, setUserPostsList}) {
         postFormData.append('answer1', newPost.answer1);
         postFormData.append('answer2', newPost.answer2);
         postFormData.append('video', video);
-        postFormData.append('account', loggedInUserInfo.account_id);
+
+        if(loggedInUserInfo.account_id) {
+            postFormData.append('account', Number(loggedInUserInfo.account_id));
+        } else if(accountInfo.id) {
+            postFormData.append('account', Number(accountInfo.id));
+        }
+        
 
         if(answerButton) {
             postFormData.append('correct_answer', 'answer1');
@@ -57,9 +63,11 @@ function PostCreate({loggedInUserInfo, userPostsList, setUserPostsList}) {
                 throw new Error('Response was not ok!');
             } else {
                 const data = await response.json();
-                let copyList = userPostsList;
-                copyList.unshift(data);
-                setUserPostsList(copyList);
+                if(userPostsList) {
+                    let copyList = userPostsList;
+                    copyList.unshift(data);
+                    setUserPostsList(copyList);
+                }
                 navigate('/current-user-account-view/');
             }
         }

@@ -7,7 +7,7 @@ import { handleErrors } from '../../utitlties/Utility'
 import { useNavigate } from 'react-router-dom'
 import Modal from 'react-bootstrap/Modal'
 
-function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
+function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo, setPoints}) {
 
     const [html, setHtml] = useState(true);
     const [show, setShow] = useState(false);
@@ -63,7 +63,9 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
             throw new Error('Response was not ok!')
         } else {
             const data = await response.json()
+            console.log(data);
             setAccountInfo(data);
+            setPoints(data.points);
         }
     }
 
@@ -85,10 +87,17 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
             } else {
                 const data = await response.json()
                 if (data.hasOwnProperty('key')) {
+                    console.log(data)
                     Cookies.set('authorization', `Token ${data.key}`)
                     setLoggedInUserInfo(data);
-                    navigate('/');
-                    
+                    setPoints(data.account_points);
+
+                    if(data.account_active) {
+                        navigate('/');
+                    } else {
+                        navigate('/account-reactivation/')
+                    }
+
                 } else {
                     modalTextSetter('Incorrect username or password')
                 }
@@ -123,6 +132,7 @@ function LoginRegis({setAccountInfo, setLoggedIn, setLoggedInUserInfo}) {
                 const data = await response.json()
                 Cookies.set('authorization', `Token ${data.key}`);
                 setLoggedInUserInfo(data);
+                console.log(data);
                 createAccount();
                 navigate('/');
             }

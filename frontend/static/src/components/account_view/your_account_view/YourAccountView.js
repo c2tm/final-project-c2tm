@@ -31,18 +31,20 @@ function YourAccountView({accountInfo, setAccountInfo, setPostsList, userPostsLi
             getUserPosts();
         }
 
-        const getAccountInfo = async () => {
-            const response = await fetch('/api/v1/accounts/user/')
-      
-            if(!response.ok) {
-                console.log('i made it here')
-              throw new Error('Response was not ok!')
-            } else {
-              const data = await response.json()
-              setAccountInfo(data)
-            }
-      }
-      getAccountInfo()
+        if(!accountInfo) {
+            const getAccountInfo = async () => {
+                const response = await fetch('/api/v1/accounts/user/')
+          
+                if(!response.ok) {
+                    console.log('i made it here')
+                  throw new Error('Response was not ok!')
+                } else {
+                  const data = await response.json()
+                  setAccountInfo(data)
+                }
+          }
+          getAccountInfo()
+        }
 
     }, [])
 

@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form/'
 import AdminUserView from "./AdminUserView"
 
 
-function AdminView({setPostsList, postsList, loggedInUserInfo}) {
+function AdminView({setPostsList, postsList, loggedInUserInfo, points, setPoints}) {
 
     const [submittedPostList, setSubmittedPostList] = useState(null)
     const [flaggedAccounts, setFlaggedAccounts] = useState(null);
@@ -81,6 +81,7 @@ function AdminView({setPostsList, postsList, loggedInUserInfo}) {
             } else {
                 const data = await response.json();
                 console.log(data);
+                setPoints(Number(points + 1000));
             }
         }
         givePoints();

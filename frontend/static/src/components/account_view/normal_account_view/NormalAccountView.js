@@ -7,7 +7,7 @@ import './NormalAccountView.css'
 import '.././account.css'
 import Overlay from 'react-bootstrap/Overlay'
 
-function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserInfo}) {
+function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserInfo, points, setPoints}) {
 
    const [userAccountInfo, setUserAccountInfo] = useState(null);
    const [show, setShow] = useState(false);
@@ -140,7 +140,7 @@ function NormalAccountView({postsList, accountInfo, setPostsList, loggedInUserIn
 
     if(postsList && loggedInUserInfo) {
         postHTML = postsList.filter(post => post.user==params.accountId).map(post => (
-            <Post post={post} loggedInUserInfo={loggedInUserInfo} postsList={postsList} setPostsList={setPostsList} key={post.id}/>
+            <Post post={post} points={points} accountInfo={accountInfo} setPoints={setPoints} loggedInUserInfo={loggedInUserInfo} postsList={postsList} setPostsList={setPostsList} key={post.id}/>
         ))
     }
 
