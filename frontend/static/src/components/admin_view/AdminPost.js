@@ -104,7 +104,7 @@ function AdminPost({post, submittedPostList, setSubmittedPostList, postsList, se
             </Modal>
             <h1 onClick={handleNameClick}>{post.account_alias}</h1>
             <div className="video">
-                <video controls>
+                <video controls playsInline>
                     <source src={post.video} type='video/mp4'/>               
                 </video>
             </div>
