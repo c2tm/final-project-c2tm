@@ -113,9 +113,12 @@ function AdminUserView({account, flaggedAccounts, setFlaggedAccounts, update, se
                     <img src={account.profile_img} alt="profile image"/>
                 </div>
                 <h1 onClick={handleNameClick}>{account.alias}</h1>
-                <h3>{account.points}</h3>
-                <h4>{account.alltime_points}</h4>
-                <button onClick={handleOptionsClick}>Options</button>
+                <div className='points-and-options'>
+                    <h3>{account.points}</h3>
+                    <h4>{account.alltime_points}</h4>
+                    <button onClick={handleOptionsClick}>Options</button>
+                </div>
+                
             
             </div>
         </div>

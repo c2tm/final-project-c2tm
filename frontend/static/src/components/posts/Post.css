@@ -211,3 +211,32 @@
 .preguesspost-modal-button {
   width: 10rem;
 }
+
+@media (max-width: 576px) {
+  .post {
+    height: auto;
+    width: 100%;
+    margin: 0 0 2rem 0;
+  }
+
+  .video {
+    width: 100%;
+  }
+
+  .video > video {
+    height: auto;
+    width: 100%;
+  }
+
+  .answer-post-guess {
+    padding: 1rem 1rem 1rem 1rem;
+  }
+
+  .answer-post-guess > p {
+    font-size: 14px;
+  }
+
+  .modal {
+    margin: 0 0 0 0;
+  }
+}

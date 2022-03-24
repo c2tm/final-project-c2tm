@@ -59,14 +59,14 @@ function Leaderboard() {
         <div className="leaderboards-view-container">
             <div className='leaderboards-container'>
                 <div className='points-leaderboard'>
-                    <h1>Current Points Leaderboard</h1>
+                    <h1 className='leaderboard-h1'>Current Points Leaderboard</h1>
                     <div>
                         {leaderboardHTML} 
                     </div>
                 </div>
                 <div className='divider-container'><div className='divider'></div></div>
                 <div className='alltime-points-leaderboard'>
-                    <h1>All-Time Earnings Leaderboard</h1>
+                    <h1 className='leaderboard-h1'>All-Time Earnings Leaderboard</h1>
                     <div>
                         {alltimeLeaderboardHTML}
                     </div>

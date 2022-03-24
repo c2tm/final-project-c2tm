@@ -84,3 +84,62 @@
   background: var(--blue-gradient);
   border-bottom: 2px var(--purple-bg-color) solid;
 }
+
+.mobile-button {
+  display: none;
+}
+
+.mobile-button-2 {
+  display: none;
+}
+
+.App > .routes {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+@media (max-width: 576px) {
+  .mobile-button {
+    display: block;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    margin: 1.65rem 0 0 0;
+  }
+
+  .mobile-button-2 {
+    display: block;
+    background: none;
+    border: none;
+    color: white;
+    margin: 2rem 0 1rem 0;
+  }
+
+  .mobile-button > svg,
+  .mobile-button-2 > svg {
+    font-size: 28px;
+  }
+
+  .mobile-button > svg:hover,
+  .mobile-button-2 > svg:hover {
+    font-size: 28px;
+    color: rgb(195, 0, 235);
+  }
+
+  .sidebar {
+    width: 100vw;
+    border: none;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .visible {
+    display: flex;
+  }
+}

@@ -30,3 +30,9 @@
 .deactivate-button:hover {
   background: rgb(173, 2, 173);
 }
+
+@media (max-width: 576px) {
+  .account-deletion-view > div {
+    width: 80%;
+  }
+}

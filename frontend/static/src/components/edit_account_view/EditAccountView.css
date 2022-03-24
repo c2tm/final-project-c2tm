@@ -19,3 +19,9 @@
   display: flex;
   justify-content: space-around;
 }
+
+@media (max-width: 576px) {
+  .form-container {
+    width: 80%;
+  }
+}

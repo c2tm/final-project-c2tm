@@ -149,7 +149,6 @@ function AdminView({setPostsList, postsList, loggedInUserInfo, points, setPoints
                     {userAccountsHTML}
                 </ul>
             )}
-
         </div>
     )
 }
