@@ -101,6 +101,20 @@
   width: 100%;
 }
 
+.sidebar-button-group > h1 {
+  text-transform: uppercase;
+  font-size: 24px;
+  margin: 25rem 0 0 4.5rem;
+}
+
+.this {
+  color: rgb(230, 2, 211);
+}
+
+.that {
+  color: var(--accent-color);
+}
+
 @media (max-width: 576px) {
   .mobile-button {
     display: block;
