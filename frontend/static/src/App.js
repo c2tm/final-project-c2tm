@@ -155,8 +155,9 @@ function App() {
               <button type="button" name='create-post' onClick={(e) => mobileSidebarHandler(e)}>Create Post</button>
               {loggedInUserInfo && (loggedInUserInfo.is_superuser && <button type="button" name='admin' onClick={(e) => mobileSidebarHandler(e)}>Admin View</button>)}
               <button type="button" onClick={() => handleLogoutClick()}>Logout</button>
-              <h1><span className="this">This</span>Or<span className="that">That</span></h1>
+              
           </div>
+          <h1><span className="this">This</span>Or<span className="that">That</span></h1>
             
       </div>
   )
