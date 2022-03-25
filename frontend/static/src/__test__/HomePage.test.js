@@ -24,7 +24,4 @@ describe('HomePage', () => {
         expect(container.querySelector('div')).not.toBeNull()
     })
 
-    it('renders fetched data', () => {
-        jest.spyOn(global, fetch)
-    })
 })
