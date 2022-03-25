@@ -4,16 +4,16 @@ This or That is a creative approach to a social media website. It utilizes point
 
 ## My app utilizes:
 
-AmazonS3 Buckets
-Font Awesome
-js-cookie
-React Router Dom
-gunicorn
-whitenoise
-Django
-React
-djangorestframework
-django-rest-auth
-django-allauth
+- AmazonS3 Buckets
+- Font Awesome
+- js-cookie
+- React Router Dom
+- gunicorn
+- whitenoise
+- Django
+- React
+- djangorestframework
+- django-rest-auth
+- django-allauth
 
 My app is deployed on Heroku and can be accessed [here](https://final-project-c2tm.herokuapp.com/).
