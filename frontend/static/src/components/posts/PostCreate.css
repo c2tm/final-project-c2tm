@@ -74,3 +74,17 @@
     height: 39rem;
   }
 }
+
+@media (max-width: 390px) and (max-height: 844px) {
+  .post-create-container {
+    height: 52rem;
+  }
+
+  .create-form {
+    width: 21rem;
+  }
+
+  .create-form > div > input {
+    width: 18rem;
+  }
+}

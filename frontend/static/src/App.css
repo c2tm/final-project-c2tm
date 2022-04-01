@@ -158,3 +158,6 @@
     display: flex;
   }
 }
+
+@media (max-width: 390px) and (max-height: 844px) {
+}

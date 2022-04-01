@@ -99,3 +99,9 @@
   justify-content: space-between;
   width: 10rem;
 }
+
+@media (max-width: 390px) and (max-height: 844px) {
+  .group > input {
+    width: 15rem;
+  }
+}

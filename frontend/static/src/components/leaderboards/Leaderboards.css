@@ -115,3 +115,9 @@
     font-size: 16px;
   }
 }
+
+@media (max-width: 390px) and (max-height: 844px) {
+  .leaderboards-container {
+    margin: 0 0 5rem 0;
+  }
+}
